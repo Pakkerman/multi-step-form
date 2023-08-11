@@ -1,11 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
 body{
-  @apply bg-slate-900 min-h-[100dvh];
+  @apply font-ubuntu bg-neutral-magnolia ;
 }
 
 
-.preview {@apply bg-red-400 bg-opacity-30  sm:bg-blue-400 sm:bg-opacity-30 md:bg-green-400  md:bg-opacity-30 lg:bg-cyan-400 lg:bg-opacity-30;}
+.pre {
+@apply bg-red-400 bg-opacity-30 sm:bg-blue-400 sm:bg-opacity-30 md:bg-green-400  md:bg-opacity-30 lg:bg-cyan-400 lg:bg-opacity-30
+}
