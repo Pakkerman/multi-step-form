@@ -13,7 +13,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link rel="png" href="/favicon.png" />
       </Head>
       <Component {...pageProps} />
-      {/* <Footer /> */}
     </>
   )
 }
