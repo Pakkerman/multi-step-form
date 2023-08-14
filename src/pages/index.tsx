@@ -104,7 +104,6 @@ const Form = ({ formRef, setSubmitting }: any) => {
           type="text"
         />
       </div>
-      <button type="submit">test</button>
     </form>
   )
 }
@@ -115,7 +114,6 @@ export default function Home() {
 
   return (
     <>
-      <WindowObserver />
       <main className="relative flex h-[100dvh]  min-h-[700px] min-w-[390px] flex-col items-center justify-between transition-all">
         <Image
           className="absolute z-[-100] w-full lg:hidden"
@@ -155,7 +153,7 @@ export default function Home() {
                 </button>
                 <div className="flex flex-col">
                   <p>step1</p>
-                  <p>Your info</p>
+                  <p className="text-">Your info</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
