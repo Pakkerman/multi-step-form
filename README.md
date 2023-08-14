@@ -55,16 +55,10 @@ This is a solution to the [Multi-step form](https://www.frontendmentor.io/challe
 ### Optimizations
 
 
-### Notes
-- Background image handling 
-  - It's really tricky to use bg-[] for background image with tailwind, there are total 12 of images across all different layouts, the complete string of the classname must be appear somewhere in the code in order for tailwind to parse and added to the stylesheet, this defeats goal of dynamically generating different background depending on page and size in the first place, so opt to using Imaging instead.
-
-- Pesky cursor-pointer and touch screen tap highlighting
-  - When a cursor-pointer applied, on touch devices, will have a short flash when tap, looks very cheap, and disiabling it using media query is just asking for trouble and still will not solve if on mobile device with a mouse. so I found these property that will help with do the trick:
-  - ```
-    -webkit-tap-highlight-color: transparent; /* For Safari, iOS */
-    tap-highlight-color: transparent; /* For some Android browsers */
-    ```
+### Learned
+  - How to correctly layout mobile UI using min and max height, and dvh
+  - React Hook Form
+  - How to submit a form with button that is not a child in react 
 
 ### Links
 
