@@ -1,21 +1,16 @@
-import React, {
-  KeyboardEvent,
-  KeyboardEventHandler,
-  useEffect,
-  useState,
-} from "react"
+import React, { useEffect, useState } from "react"
 
 const colors = [
-  "primary-marine-blue",
-  "primary-purplish-blue",
-  "primary-pastel-blue",
-  "primary-light-blue",
-  "primary-strawberry-red",
-  "neutral-cool-gray",
-  "neutral-light-gray",
-  "neutral-magnolia",
-  "neutral-alabaster",
-  "neutral-white",
+  "bg-primary-marine-blue",
+  "bg-primary-purplish-blue",
+  "bg-primary-pastel-blue",
+  "bg-primary-light-blue",
+  "bg-primary-strawberry-red",
+  "bg-neutral-cool-gray",
+  "bg-neutral-light-gray",
+  "bg-neutral-magnolia",
+  "bg-neutral-alabaster",
+  "bg-neutral-white",
 ]
 
 export const ColorPalette = () => {
@@ -32,16 +27,18 @@ export const ColorPalette = () => {
   }, [])
 
   return (
-    <div>
+    <>
       {show && (
         <div className="fixed left-0 top-0 z-50 flex flex-col">
           {colors.map((item) => (
-            <div className={`h-10  bg-${item} `}>
-              <p className="bg-slate-800 text-sm text-slate-200">{item}</p>
+            <div className={`h-14 ${item}`}>
+              <p className="bg-slate-800 text-sm text-slate-200">
+                {item.split("bg-").join("")}
+              </p>
             </div>
           ))}
         </div>
       )}
-    </div>
+    </>
   )
 }
