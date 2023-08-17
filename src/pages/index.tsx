@@ -1,27 +1,93 @@
 import Image from "next/image"
-import { useRef, useState } from "react"
+import {
+  type Dispatch,
+  type RefObject,
+  type SetStateAction,
+  useRef,
+  useState,
+} from "react"
 import { useForm } from "react-hook-form"
 import { MobileProgress, DesktopProgress } from "../components/Prograss"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { FormSchemas } from "~/lib/schemas"
+import { calculateAddons, calculatePlan } from "~/helpers/helpers"
 
-const ErrorMessage = ({ message }: any) => {
+const ErrorMessage = ({ message }: { message: string | undefined }) => {
+  if (!message) return <></>
   return <p className=" text-primary-strawberry-red">{message}</p>
 }
 
-const Form = ({ formRef, setSubmitting }: any) => {
+const FormFields = {
+  basicInfo: [
+    { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
+    {
+      fieldName: "emailAddress",
+      label: "Email Address",
+      placeholder: "e.g. stephenking@lorem.com",
+    },
+    {
+      fieldName: "phoneNumber",
+      label: "Phone Number",
+      placeholder: "e.g. 1234567890",
+    },
+  ],
+  plan: [
+    { fieldName: "arcade", label: "Arcade", monthlyPrice: 9 },
+    { fieldName: "advanced", label: "Advanced", monthlyPrice: 12 },
+    { fieldName: "pro", label: "Pro", monthlyPrice: 15 },
+  ],
+  addons: [
+    {
+      label: "Online Service",
+      info: "Access to multiplayer games",
+      monthlyPrice: 1,
+    },
+    {
+      label: "Larger storage",
+      info: "Extra 1TB of cloud storage",
+      monthlyPrice: 2,
+    },
+    {
+      label: "Customizable profile",
+      info: "Custom theme on your profile",
+      monthlyPrice: 2,
+    },
+  ],
+}
+
+const Form = ({
+  formRef,
+  setSubmitting,
+}: {
+  formRef: RefObject<HTMLFormElement>
+  setSubmitting: Dispatch<SetStateAction<boolean>>
+}) => {
+  const [step, setStep] = useState(0)
+  const [plan, setPlan] = useState<string>("")
+  const [billCycle, setBillCycle] = useState<"monthly" | "yearly">("monthly")
+  const [addons, setAddons] = useState<Array<string>>([])
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     handleSubmit,
+    getFieldState,
+    watch,
     reset,
+    setValue,
+    getValues,
   } = useForm({
+    mode: "onTouched",
+    resolver: zodResolver(FormSchemas[step]),
     defaultValues: {
-      name: "pakkerman",
-      email: "test@a.com",
-      phonenumber: "1231231234",
+      name: "",
+      emailAddress: "",
+      phoneNumber: "",
+      plan: "",
+      addons: [""],
     },
   })
 
-  const submit = async (data: any) => {
+  const onSubmit = async (data: any) => {
     setSubmitting(true)
     await new Promise((resolve) =>
       setTimeout(() => {
@@ -34,73 +100,260 @@ const Form = ({ formRef, setSubmitting }: any) => {
 
   return (
     <form
-      ref={formRef}
-      onSubmit={handleSubmit(submit)}
-      className="bg-alabaster m-8 flex min-h-min flex-col justify-between md:max-w-[450px] lg:mx-auto"
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col space-y-4 px-6 py-8"
     >
-      <div className="flex flex-grow flex-col justify-center space-y-4">
-        <h1 className="text-3xl font-bold text-primary-marine-blue">
-          Personal info
-        </h1>
-        <p className="pb-8 text-sm text-neutral-cool-gray">
-          Please provide your name, email address, and phone number.
-        </p>
-        <div className="flex flex-col text-sm">
-          <div className=" flex h-6 justify-between">
-            <label htmlFor="">Name</label>
-            {errors.name && <ErrorMessage message={errors.name.message} />}
-          </div>
-          <input
-            {...register("name", {
-              required: "You must enter your name",
-              minLength: { value: 2, message: "too short" },
+      {step === 0 && (
+        <>
+          <h1 className="text-2xl font-bold">Finishing Up</h1>
+          <p className="text-neutral-cool-gray">
+            Double-check everything looks OK before confirming
+          </p>
+          {FormFields.basicInfo.map((item) => {
+            const { fieldName, label, placeholder } = item
+            return (
+              <div className="space-1 flex flex-col py-1" key={label}>
+                <div className="flex justify-between text-sm text-primary-marine-blue">
+                  <label className="">{label}</label>
+                  {errors[fieldName] && (
+                    <ErrorMessage message={errors[fieldName]?.message} />
+                  )}
+                </div>
+                <input
+                  placeholder={placeholder}
+                  className="rounded-lg border-[1px] border-neutral-cool-gray py-2 pl-3"
+                  type="text"
+                  {...register(fieldName)}
+                />
+              </div>
+            )
+          })}
+        </>
+      )}
+      {step === 1 && (
+        <>
+          <div className="flex flex-col space-y-2">
+            {FormFields.plan.map((item) => {
+              const { fieldName, label, monthlyPrice } = item
+              const yearlyPrice = monthlyPrice * 10
+              return (
+                <label
+                  key={label}
+                  className={`flex cursor-pointer space-x-3 overflow-hidden rounded-lg border-[1.5px]  p-4 transition-colors hover:border-primary-purplish-blue ${
+                    getValues("plan") === fieldName
+                      ? "border-primary-purplish-blue bg-neutral-light-gray/50"
+                      : "border-neutral-cool-gray"
+                  }`}
+                  {...register("plan")}
+                  onClick={() => {
+                    setPlan(label)
+                    setValue("plan", fieldName as string)
+                  }}
+                >
+                  <Image
+                    src={`assets/images/icon-${label}.svg`}
+                    width={40}
+                    height={40}
+                    alt={`${label} icon`}
+                  />
+                  <div className="w-full">
+                    <label className="font-bold capitalize text-primary-marine-blue">
+                      {label}
+                    </label>
+                    <div className="flex items-center justify-between text-neutral-cool-gray">
+                      <p>
+                        ${billCycle === "monthly" ? monthlyPrice : yearlyPrice}
+                        /mo
+                      </p>
+                      <p
+                        className={`text-sm text-primary-marine-blue transition-all ${
+                          billCycle === "yearly"
+                            ? "translate-y-[0%] opacity-100"
+                            : "translate-y-[100%] opacity-0"
+                        } `}
+                      >
+                        2 months free
+                      </p>
+                    </div>
+                  </div>
+                </label>
+              )
             })}
-            className="h-10 rounded-md border-[1px] border-neutral-light-gray px-3"
-            type="text"
-            autoComplete="off"
-            placeholder="eg. Pakkerman"
-          />
-        </div>
-        <div className="flex flex-col text-sm">
-          <div className=" flex h-6 justify-between">
-            <label htmlFor="">Email</label>{" "}
-            {errors.email && <ErrorMessage message={errors.email.message} />}
           </div>
-          <input
-            {...register("email", { required: "Email is required" })}
-            className="h-10 rounded-md border-[1px] border-neutral-light-gray px-3"
-            type="email"
-          />
-        </div>
-        <div className="flex flex-col text-sm">
-          <div className=" flex h-6 justify-between">
-            <label htmlFor="">Phone Number</label>
-            {errors.phonenumber && (
-              <ErrorMessage message={errors.phonenumber.message} />
-            )}
+          <div className="flex justify-evenly rounded-lg bg-neutral-magnolia py-4">
+            <p
+              className={`w-20 text-center transition-all ${
+                billCycle === "monthly"
+                  ? "font-bold text-primary-marine-blue"
+                  : "text-neutral-cool-gray"
+              }`}
+            >
+              Monthly
+            </p>
+            <button
+              onClick={() =>
+                setBillCycle(billCycle === "yearly" ? "monthly" : "yearly")
+              }
+              className="relative h-6 w-12 rounded-full bg-primary-marine-blue"
+            >
+              <div
+                className={`absolute top-[50%] mx-1 h-4 w-4 translate-y-[-50%] rounded-full bg-neutral-magnolia transition-all  ${
+                  billCycle === "monthly" ? "left-[0%]" : "left-[50%]"
+                }`}
+              />
+            </button>
+            <p
+              className={`w-20 text-center transition-all ${
+                billCycle === "yearly"
+                  ? "font-bold text-primary-marine-blue"
+                  : "text-neutral-cool-gray"
+              }`}
+            >
+              Yearly
+            </p>
           </div>
-          <input
-            {...register("phonenumber", {
-              required: "Phone number is required",
-              minLength: {
-                value: 10,
-                message: "Must be 10 digits",
-              },
-            })}
-            className="h-10 rounded-md border-[1px] border-neutral-light-gray px-3"
-            type="text"
-          />
-        </div>
-      </div>
+        </>
+      )}
 
-      <div className="hidden h-24 items-center justify-end lg:flex ">
+      {step === 2 && (
+        <div className="flex flex-col space-y-2">
+          <h1 className="text-2xl font-bold text-primary-marine-blue">
+            Pick Add-ons
+          </h1>
+          <p className="text-neutral-cool-gray">
+            Add-ons help enhance your gaming experience!
+          </p>
+          <div className="space-y-4">
+            {FormFields.addons.map((item) => {
+              const { label, info, monthlyPrice } = item
+              let price = monthlyPrice
+              if (billCycle === "yearly") price *= 10
+              return (
+                <label
+                  key={label}
+                  htmlFor={label}
+                  className={`flex cursor-pointer space-x-4 rounded-lg border-[1.5px]  px-4 py-3 transition-all 
+                  hover:border-primary-purplish-blue
+                  ${
+                    addons.includes(label)
+                      ? " border-primary-purplish-blue bg-neutral-light-gray/20"
+                      : "border-neutral-light-gray"
+                  }`}
+                >
+                  <input
+                    className="w-6 accent-primary-purplish-blue outline-none transition-all "
+                    id={label}
+                    type="checkbox"
+                    {...register("addons")}
+                    value={label}
+                    onClick={() => {
+                      addons.includes(label)
+                        ? setAddons(addons.filter((item) => item !== label))
+                        : setAddons([...addons, label])
+                    }}
+                    checked={addons.includes(label)}
+                  />
+                  <div className="flex w-full items-center justify-between">
+                    <div>
+                      <p className="font-bold text-primary-marine-blue">
+                        {label}
+                      </p>
+                      <p className="text-sm text-neutral-cool-gray">{info}</p>
+                    </div>
+                    <p className="text-sm text-primary-purplish-blue">
+                      +${price}/mo
+                    </p>
+                  </div>
+                </label>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <>
+          <div className="flex flex-col space-y-4">
+            <h1 className="text-2xl font-bold">Finishing Up</h1>
+            <p className="text-neutral-cool-gray">
+              Double-check everything looks OK before confirming
+            </p>
+            <div className="bg-neutral-magnolia p-4">
+              <div className="flex justify-between">
+                <div>
+                  <h1 className=" font-bold capitalize text-primary-marine-blue">
+                    {watch("plan")} ({billCycle})
+                  </h1>
+                  <button className="" type="button" onClick={() => setStep(0)}>
+                    Change
+                  </button>
+                </div>
+                <p className="self-end font-bold text-primary-marine-blue">
+                  ${calculatePlan(getValues("plan"), billCycle)}/
+                  {billCycle === "monthly" ? "mo" : "yr"}
+                </p>
+              </div>
+              <hr className="my-4 border-[1px] "></hr>
+              {addons.map((item) => (
+                <div key={item} className="flex justify-between">
+                  <p>{item}</p>
+                  <p>
+                    +{calculateAddons(item, billCycle)}/
+                    {billCycle === "monthly" ? "mo" : "yr"}
+                  </p>
+                </div>
+              ))}
+              <div className="flex justify-between">
+                <p>Total</p>
+                <p>{watch("plan")} blah blah</p>
+              </div>
+              <p>Total per({billCycle})</p>
+            </div>
+          </div>
+        </>
+      )}
+      {step === 4 && (
+        <div className="flex flex-col items-center">
+          <Image
+            src="assets/images/icon-thank-you.svg"
+            width={80}
+            height={80}
+            alt="thank you icon"
+          />
+          <h1 className="text-3xl font-bold text-primary-marine-blue">
+            Thank you!
+          </h1>
+          <p className="text-center text-neutral-cool-gray">
+            Thanks for confirming your subscription! We hope you have fun using
+            our platform. If you ever need support, please feel free to email us
+            at support@loremgaming.com.
+          </p>
+        </div>
+      )}
+      <div className=" flex justify-between">
         <button
-          type="submit"
-          className="text-alabaster rounded-md bg-primary-marine-blue  px-4 py-2 text-sm text-neutral-magnolia"
+          className="rounded-lg bg-neutral-magnolia px-4 py-2 text-neutral-cool-gray"
+          type="button"
+          onClick={() => setStep(step - 1)}
+          disabled={step === 0}
         >
-          Next Step
+          Go back
+        </button>
+
+        <button
+          className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+          disabled={!isValid || step > 3}
+          type={`${step === 3 ? "submit" : "button"}`}
+          onClick={() => setStep(step + 1)}
+        >
+          {step === 3 ? "Confirm" : "Next"}
         </button>
       </div>
+      <pre>{billCycle}</pre>
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
+      <pre>{isValid ? "valid" : "invalid"}</pre>
+      <pre>{step}</pre>
+      <pre>{JSON.stringify(addons, null, 2)}</pre>
     </form>
   )
 }
@@ -137,6 +390,7 @@ export default function Home() {
               />
             </div>
           </div>
+
           <Form formRef={formRef} setSubmitting={setSubmitting} />
         </section>
         <section className="flex h-20 w-full items-center justify-end bg-neutral-alabaster px-4 md:hidden">

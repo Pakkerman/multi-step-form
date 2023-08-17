@@ -12,7 +12,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <Head>
         <title>Multi Step Form</title>
         <meta name="description" content="Multi Step Form with Create T3 App" />
-        <link rel="png" href="/favicon.png" />
+        <link href="favicon.png" />
       </Head>
       <WindowObserver />
       <ColorPalette />

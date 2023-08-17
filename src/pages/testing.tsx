@@ -1,82 +1,83 @@
 import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FormSchemas } from "../Schemas/FormSchemas"
+import { FormSchemas } from "../lib/schemas"
+import { ZodType, ZodTypeAny, z } from "zod"
+
+const formSchemas = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(3, "min length 3 characters"),
+    confirmPassword: z.string().min(3, "min length 3 character"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "password must match",
+    path: ["confirmPassword"],
+  })
+
+type SignUpSchema = z.infer<typeof formSchemas>
 
 export default function testing() {
   const [step, setStep] = useState(0)
   const {
     register,
-    formState: { errors, isValid },
+    reset,
+    watch,
     handleSubmit,
-  } = useForm({
-    resolver: zodResolver(FormSchemas[step]),
-    defaultValues: { Name: "", "Email Address": "", "Phone Number": "" },
+    formState: { errors, isValid },
+  } = useForm<SignUpSchema>({
+    resolver: zodResolver(formSchemas),
+    mode: "onTouched",
   })
 
-  const onSubmit = (date: FieldValues) => {
+  const onSubmit = async (data: SignUpSchema) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     alert(data)
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center px-8 pt-20 "
+      className="flex flex-col px-8 pt-20"
     >
-      {step === 0 && (
-        <>
-          <div>
-            <label>Name</label>
-            {errors.Name && <p>{errors.Name.message}</p>}
-          </div>
-          <input
-            type="text"
-            className=""
-            {...register("Name", { required: "required field" })}
-          />
-        </>
-      )}
-      {step === 1 && (
-        <>
-          <div>
-            <label>Email Address</label>
-            {errors["Email Address"] && (
-              <p>{errors["Email Address"].message}</p>
-            )}
-          </div>
-          <input
-            type="text"
-            className=""
-            {...register("Email Address", { required: "required field" })}
-          />
-          <div>
-            <label>Phone Number</label>
-            {errors["Phone Number"] && <p>{errors["Phone Number"].message}</p>}
-          </div>
-          <input
-            type="text"
-            className=""
-            {...register("Phone Number", { required: "required field" })}
-          />
-        </>
-      )}
+      <div className="flex justify-between text-sm">
+        <label>Email</label>
+        {errors.email && (
+          <p className="text-red-400">{`${errors.email.message}`}</p>
+        )}
+      </div>
+      <input type="text" {...register("email")} />
+      <div className="flex justify-between text-sm">
+        <label>Password</label>
+        {errors.password && (
+          <p className="text-red-400">{`${errors.password.message}`}</p>
+        )}
+      </div>
+      <input type="text" {...register("password")} />
+      <div className="flex justify-between text-sm">
+        <label>Confirm Password</label>
+        {errors.confirmPassword && (
+          <p className="text-red-400">{`${errors.confirmPassword.message}`}</p>
+        )}
+      </div>
+      <input type="text" {...register("confirmPassword")} />
 
       <button
-        type="button"
-        disabled={step === 0}
-        className={`m-4 self-center rounded-lg border-2 border-slate-800 p-2 px-4 hover:bg-orange-400 disabled:opacity-20`}
-        onClick={() => step >= 0 && setStep(step - 1)}
+        type="submit"
+        className="border-state-800 m-4 self-center border-2 px-4 py-2"
       >
-        Go back
+        Submit
       </button>
       <button
         type="button"
-        disabled={!isValid}
-        className={`m-4 self-center rounded-lg border-2 border-slate-800 p-2 px-4 hover:bg-orange-400 disabled:opacity-20`}
+        className="border-state-800 m-4 self-center border-2 px-4 py-2"
         onClick={() => step <= 3 && setStep(step + 1)}
       >
-        Next
+        next
       </button>
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
+      <pre>{isValid ? "valid" : "invalid"}</pre>
+      <pre>steps: {step}</pre>
     </form>
   )
 }
