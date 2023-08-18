@@ -1,4 +1,4 @@
-export function calculatePlan(plan: string, cycle: string): number {
+export function calculatePlan(plan: string, billCycle: string): number {
   let price = 0
   switch (plan) {
     case "arcade":
@@ -12,11 +12,11 @@ export function calculatePlan(plan: string, cycle: string): number {
       break
   }
 
-  if (cycle === "yearly") return price * 10
+  if (billCycle === "yearly") return price * 10
   return price
 }
 
-export function calculateAddons(addonName: string, cycle: string): number {
+export function calculateAddons(addonName: string, billCycle: string): number {
   let price = 0
   switch (addonName) {
     case "Online Service":
@@ -30,8 +30,25 @@ export function calculateAddons(addonName: string, cycle: string): number {
       break
   }
 
-  if (cycle === "yearly") return price * 10
+  if (billCycle === "yearly") return price * 10
   return price
 }
 
-export function calculateTotal(): number {}
+export function calculateTotal(
+  plan: string,
+  addons: string[],
+  billCycle: string
+): number {
+  return (
+    calculatePlan(plan, billCycle) +
+    addons
+      .map((item) => calculateAddons(item, billCycle))
+      .reduce((acc, curr) => acc + curr)
+  )
+}
+
+export function formatBillCycle(billCycle: string): string {
+  if (billCycle === "monthly") return "mo"
+  if (billCycle === "yearly") return "yr"
+  return ""
+}

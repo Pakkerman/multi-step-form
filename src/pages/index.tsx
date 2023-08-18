@@ -10,14 +10,19 @@ import { useForm } from "react-hook-form"
 import { MobileProgress, DesktopProgress } from "../components/Prograss"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormSchemas } from "~/lib/schemas"
-import { calculateAddons, calculatePlan } from "~/helpers/helpers"
+import {
+  calculateAddons,
+  calculatePlan,
+  calculateTotal,
+  formatBillCycle,
+} from "~/helpers/helpers"
 
 const ErrorMessage = ({ message }: { message: string | undefined }) => {
   if (!message) return <></>
   return <p className=" text-primary-strawberry-red">{message}</p>
 }
 
-const FormFields = {
+const FormFieldData = {
   basicInfo: [
     { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
     {
@@ -79,15 +84,15 @@ const Form = ({
     mode: "onTouched",
     resolver: zodResolver(FormSchemas[step]),
     defaultValues: {
-      name: "",
-      emailAddress: "",
-      phoneNumber: "",
-      plan: "",
-      addons: [""],
+      name: "pak",
+      emailAddress: "test@gmail.com",
+      phoneNumber: "1231231231",
+      plan: "pro",
+      addons: ["Online Services"],
     },
   })
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     setSubmitting(true)
     await new Promise((resolve) =>
       setTimeout(() => {
@@ -95,7 +100,8 @@ const Form = ({
         return resolve
       }, 1000)
     )
-    // reset()
+
+    alert(data)
   }
 
   return (
@@ -109,7 +115,7 @@ const Form = ({
           <p className="text-neutral-cool-gray">
             Double-check everything looks OK before confirming
           </p>
-          {FormFields.basicInfo.map((item) => {
+          {FormFieldData.basicInfo.map((item) => {
             const { fieldName, label, placeholder } = item
             return (
               <div className="space-1 flex flex-col py-1" key={label}>
@@ -133,7 +139,7 @@ const Form = ({
       {step === 1 && (
         <>
           <div className="flex flex-col space-y-2">
-            {FormFields.plan.map((item) => {
+            {FormFieldData.plan.map((item) => {
               const { fieldName, label, monthlyPrice } = item
               const yearlyPrice = monthlyPrice * 10
               return (
@@ -224,7 +230,7 @@ const Form = ({
             Add-ons help enhance your gaming experience!
           </p>
           <div className="space-y-4">
-            {FormFields.addons.map((item) => {
+            {FormFieldData.addons.map((item) => {
               const { label, info, monthlyPrice } = item
               let price = monthlyPrice
               if (billCycle === "yearly") price *= 10
@@ -284,30 +290,43 @@ const Form = ({
                   <h1 className=" font-bold capitalize text-primary-marine-blue">
                     {watch("plan")} ({billCycle})
                   </h1>
-                  <button className="" type="button" onClick={() => setStep(0)}>
+                  <button
+                    className="text-neutral-cool-gray underline"
+                    type="button"
+                    onClick={() => setStep(0)}
+                  >
                     Change
                   </button>
                 </div>
                 <p className="self-end font-bold text-primary-marine-blue">
                   ${calculatePlan(getValues("plan"), billCycle)}/
-                  {billCycle === "monthly" ? "mo" : "yr"}
+                  {formatBillCycle(billCycle)}
                 </p>
               </div>
               <hr className="my-4 border-[1px] "></hr>
-              {addons.map((item) => (
-                <div key={item} className="flex justify-between">
-                  <p>{item}</p>
-                  <p>
-                    +{calculateAddons(item, billCycle)}/
-                    {billCycle === "monthly" ? "mo" : "yr"}
-                  </p>
-                </div>
-              ))}
-              <div className="flex justify-between">
-                <p>Total</p>
-                <p>{watch("plan")} blah blah</p>
-              </div>
-              <p>Total per({billCycle})</p>
+              <ul className="space-y-4">
+                {addons.map((item) => (
+                  <li key={item} className="flex justify-between">
+                    <p className="text-neutral-cool-gray">{item}</p>
+                    <p className="text-primary-marine-blue">
+                      +${calculateAddons(item, billCycle)}/
+                      {formatBillCycle(billCycle)}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex justify-between p-4 text-neutral-cool-gray">
+              <p>Total (per {billCycle.slice(0, -2)})</p>
+              <p>
+                +$
+                {calculateTotal(
+                  getValues("plan"),
+                  getValues("addons"),
+                  billCycle
+                )}
+                /{formatBillCycle(billCycle)}
+              </p>
             </div>
           </div>
         </>
@@ -330,30 +349,32 @@ const Form = ({
           </p>
         </div>
       )}
-      <div className=" flex justify-between">
-        <button
-          className="rounded-lg bg-neutral-magnolia px-4 py-2 text-neutral-cool-gray"
-          type="button"
-          onClick={() => setStep(step - 1)}
-          disabled={step === 0}
-        >
-          Go back
-        </button>
+      {step <= 3 && (
+        <div className=" flex justify-between">
+          <button
+            className="rounded-lg bg-neutral-magnolia px-4 py-2 text-neutral-cool-gray"
+            type="button"
+            onClick={() => setStep(step - 1)}
+            disabled={step === 0}
+          >
+            Go back
+          </button>
 
-        <button
-          className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-          disabled={!isValid || step > 3}
-          type={`${step === 3 ? "submit" : "button"}`}
-          onClick={() => setStep(step + 1)}
-        >
-          {step === 3 ? "Confirm" : "Next"}
-        </button>
-      </div>
-      <pre>{billCycle}</pre>
+          <button
+            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+            disabled={!isValid || step > 3}
+            type={`${step === 4 ? "submit" : "button"}`}
+            onClick={() => setStep(step + 1)}
+          >
+            {step === 3 ? "Confirm" : "Next"}
+          </button>
+        </div>
+      )}
+      {/* <pre>{billCycle}</pre>
       <pre>{JSON.stringify(watch(), null, 2)}</pre>
       <pre>{isValid ? "valid" : "invalid"}</pre>
       <pre>{step}</pre>
-      <pre>{JSON.stringify(addons, null, 2)}</pre>
+      <pre>{JSON.stringify(addons, null, 2)}</pre> */}
     </form>
   )
 }
