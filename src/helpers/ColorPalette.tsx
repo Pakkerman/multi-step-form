@@ -31,7 +31,7 @@ export const ColorPalette = () => {
       {show && (
         <div className="fixed left-0 top-0 z-50 flex flex-col">
           {colors.map((item) => (
-            <div className={`h-14 ${item}`}>
+            <div key={item} className={`h-14 ${item}`}>
               <p className="bg-slate-800 text-sm text-slate-200">
                 {item.split("bg-").join("")}
               </p>

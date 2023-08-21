@@ -1,0 +1,60 @@
+export const FormHeadingData: { heading: string; info: string }[] = [
+  {
+    heading: "Personal info",
+    info: "Please provide your name, email address, and phone number.",
+  },
+  {
+    heading: "Select your plan",
+    info: "You have the option of monthly or yearly billing.",
+  },
+  {
+    heading: "Pick add-ons",
+    info: "Add-ons help enhance your gaming experience.",
+  },
+  {
+    heading: "Finishing up",
+    info: "Double-check everything looks OK before confirming.",
+  },
+  {
+    heading: "Thank you!",
+    info: " Thanks for confirming your subscription! We hope you have fun using our platform. If you ever need support, please feel free to email us at support@loremgaming.com.",
+  },
+]
+
+export const FormFieldData = {
+  basicInfo: [
+    { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
+    {
+      fieldName: "emailAddress",
+      label: "Email Address",
+      placeholder: "e.g. stephenking@lorem.com",
+    },
+    {
+      fieldName: "phoneNumber",
+      label: "Phone Number",
+      placeholder: "e.g. 1234567890",
+    },
+  ],
+  plan: [
+    { fieldName: "arcade", label: "Arcade", monthlyPrice: 9 },
+    { fieldName: "advanced", label: "Advanced", monthlyPrice: 12 },
+    { fieldName: "pro", label: "Pro", monthlyPrice: 15 },
+  ],
+  addons: [
+    {
+      label: "Online Service",
+      info: "Access to multiplayer games",
+      monthlyPrice: 1,
+    },
+    {
+      label: "Larger storage",
+      info: "Extra 1TB of cloud storage",
+      monthlyPrice: 2,
+    },
+    {
+      label: "Customizable profile",
+      info: "Custom theme on your profile",
+      monthlyPrice: 2,
+    },
+  ],
+}
