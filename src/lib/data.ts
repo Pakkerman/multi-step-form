@@ -21,40 +21,73 @@ export const FormHeadingData: { heading: string; info: string }[] = [
   },
 ]
 
-export const FormFieldData = {
-  basicInfo: [
-    { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
-    {
-      fieldName: "emailAddress",
-      label: "Email Address",
-      placeholder: "e.g. stephenking@lorem.com",
-    },
-    {
-      fieldName: "phoneNumber",
-      label: "Phone Number",
-      placeholder: "e.g. 1234567890",
-    },
-  ],
-  plan: [
-    { fieldName: "arcade", label: "Arcade", monthlyPrice: 9 },
-    { fieldName: "advanced", label: "Advanced", monthlyPrice: 12 },
-    { fieldName: "pro", label: "Pro", monthlyPrice: 15 },
-  ],
-  addons: [
-    {
-      label: "Online Service",
-      info: "Access to multiplayer games",
-      monthlyPrice: 1,
-    },
-    {
-      label: "Larger storage",
-      info: "Extra 1TB of cloud storage",
-      monthlyPrice: 2,
-    },
-    {
-      label: "Customizable profile",
-      info: "Custom theme on your profile",
-      monthlyPrice: 2,
-    },
-  ],
-}
+type StepOneFieldDataType = Array<{
+  fieldName: "name" | "emailAddress" | "phoneNumber"
+  label: string
+  placeholder: string
+}>
+
+export const StepOneFieldData: StepOneFieldDataType = [
+  { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
+  {
+    fieldName: "emailAddress",
+    label: "Email Address",
+    placeholder: "e.g. stephenking@lorem.com",
+  },
+  {
+    fieldName: "phoneNumber",
+    label: "Phone Number",
+    placeholder: "e.g. 1234567890",
+  },
+]
+
+// type FormFieldDataType = {
+//   [key: string]: Array<{
+//     fieldName: string
+//     label: string
+//     info?: string
+//     placeholder?: string
+//     monthlyPrice?: number
+//   }>
+// }
+
+// export const FormFieldData: FormFieldDataType = {
+//   basicInfo: [
+//     { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
+//     {
+//       fieldName: "emailAddress",
+//       label: "Email Address",
+//       placeholder: "e.g. stephenking@lorem.com",
+//     },
+//     {
+//       fieldName: "phoneNumber",
+//       label: "Phone Number",
+//       placeholder: "e.g. 1234567890",
+//     },
+//   ],
+//   plan: [
+//     { fieldName: "arcade", label: "Arcade", monthlyPrice: 9 },
+//     { fieldName: "advanced", label: "Advanced", monthlyPrice: 12 },
+//     { fieldName: "pro", label: "Pro", monthlyPrice: 15 },
+//   ],
+//   addons: [
+//     {
+//       fieldName: "onlineService",
+//       label: "Online Service",
+//       info: "Access to multiplayer games",
+//       monthlyPrice: 1,
+//     },
+//     {
+//       fieldName: "largerStorage",
+//       label: "Larger Storage",
+//       info: "Extra 1TB of cloud storage",
+//       monthlyPrice: 2,
+//     },
+//     {
+//       fieldName: "CustomizableProfile",
+//       label: "Customizable profile",
+//       info: "Custom theme on your profile",
+//       monthlyPrice: 2,
+//     },
+//   ],
+// }

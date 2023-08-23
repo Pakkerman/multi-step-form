@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useRef, useState } from "react"
 import { MobileProgress, DesktopProgress } from "../components/Prograss"
-import Form from "~/components/Form"
+import { Form } from "~/components/FormSteps"
 
 export default function Home() {
   const formRef = useRef<HTMLFormElement>(null)
@@ -36,7 +36,8 @@ export default function Home() {
             </div>
           </div>
 
-          <Form formRef={formRef} setSubmitting={setSubmitting} />
+          <Form />
+          {/* <Form formRef={formRef} setSubmitting={setSubmitting} /> */}
         </section>
         <section className="flex h-20 w-full items-center justify-end bg-neutral-alabaster px-4 md:hidden">
           <button
