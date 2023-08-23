@@ -1,8 +1,8 @@
 import { FieldErrors, FieldValues, useForm } from "react-hook-form"
-import { z } from "zod"
+import { promise, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormHeadingData, StepOneFieldData } from "~/lib/data"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 
 const ErrorMessage = ({
   errors,
@@ -48,13 +48,15 @@ type StepOneFieldType = z.infer<typeof StepOneSchema>
 type StepProps = {
   step: number
   setStep: Dispatch<SetStateAction<number>>
+  userData: UserInput
+  setUserData: Dispatch<SetStateAction<UserInput>>
 }
 
 export const StepOne = (props: StepProps) => {
-  const { step, setStep } = props
+  const { step, setStep, userData, setUserData } = props
   const {
     register,
-    handleSubmit,
+
     watch,
     getValues,
     formState: { errors, isValid },
@@ -63,13 +65,19 @@ export const StepOne = (props: StepProps) => {
     resolver: zodResolver(StepOneSchema),
   })
 
-  const onSubmit = (data: StepOneFieldType) => {
-    alert("submit step one")
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    console.log("getValues", getValues())
+    setUserData({ ...getValues() })
+    console.log(userData)
+
+    setStep(step + 1)
+
     return
   }
 
   return (
-    <form onSubmit={void handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit}>
       <FormHeading step={step} />
       {StepOneFieldData.map((item) => {
         const { fieldName, label, placeholder } = item
@@ -106,8 +114,38 @@ export const StepOne = (props: StepProps) => {
   )
 }
 
+const StepTwo = (props: StepProps) => {
+  return <div>steptwo</div>
+}
+
+type UserInput = {
+  name?: string
+  emailAddress?: string
+  phoneNumber?: string
+}
+
 export const Form = () => {
+  const [userInput, setUserInput] = useState<UserInput>({})
   const [step, setStep] = useState(0)
 
-  return <div>{step === 0 && <StepOne step={step} setStep={setStep} />}</div>
+  return (
+    <div>
+      {step === 0 && (
+        <StepOne
+          step={step}
+          setStep={setStep}
+          userData={userInput}
+          setUserData={setUserInput}
+        />
+      )}
+      {step === 1 && (
+        <StepTwo
+          step={step}
+          setStep={setStep}
+          userData={userInput}
+          setUserData={setUserInput}
+        />
+      )}
+    </div>
+  )
 }
