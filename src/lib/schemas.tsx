@@ -1,5 +1,3 @@
-import { type ZodTypeAny, z } from "zod"
-
 // export const FormSchemas: Array<ZodTypeAny> = [
 //   z.object({
 //     name: z
@@ -20,6 +18,8 @@ import { type ZodTypeAny, z } from "zod"
 //   z.object({}),
 // ]
 
+import { z } from "zod"
+
 export const FormSchemas = [
   z.object({
     name: z
@@ -35,3 +35,17 @@ export const FormSchemas = [
     addons: z.array(z.string()),
   }),
 ]
+
+export const StepOneSchema = z.object({
+  name: z
+    .string()
+    .regex(/^[A-Za-z]*$/, "Cannot contain digits")
+    .min(2, "Too short"),
+  emailAddress: z.string().email(),
+  phoneNumber: z
+    .string()
+    .regex(/\d*$/, "Only digits allow")
+    .min(10, "Must be 10 digits"),
+})
+
+export type StepOneFields = z.infer<typeof StepOneSchema>

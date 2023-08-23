@@ -21,13 +21,13 @@ export const FormHeadingData: { heading: string; info: string }[] = [
   },
 ]
 
-type StepOneFieldDataType = Array<{
+type StepOneFieldData = Array<{
   fieldName: "name" | "emailAddress" | "phoneNumber"
   label: string
   placeholder: string
 }>
 
-export const StepOneFieldData: StepOneFieldDataType = [
+export const StepOneFieldData: StepOneFieldData = [
   { fieldName: "name", label: "Name", placeholder: "e.g. Stephen King" },
   {
     fieldName: "emailAddress",
@@ -39,6 +39,18 @@ export const StepOneFieldData: StepOneFieldDataType = [
     label: "Phone Number",
     placeholder: "e.g. 1234567890",
   },
+]
+
+type StepTwoFieldData = Array<{
+  fieldName: "arcade" | "advanced" | "pro"
+  label: string
+  monthlyPrice: number
+}>
+
+export const StepTwoFieldData: StepTwoFieldData = [
+  { fieldName: "arcade", label: "Arcade", monthlyPrice: 9 },
+  { fieldName: "advanced", label: "Advanced", monthlyPrice: 12 },
+  { fieldName: "pro", label: "Pro", monthlyPrice: 15 },
 ]
 
 // type FormFieldDataType = {

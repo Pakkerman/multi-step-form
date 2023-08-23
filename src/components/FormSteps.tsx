@@ -1,151 +1,171 @@
+import Image from "next/image"
+
 import { FieldErrors, FieldValues, useForm } from "react-hook-form"
-import { promise, z } from "zod"
+import { z } from "zod"
+
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FormHeadingData, StepOneFieldData } from "~/lib/data"
-import { Dispatch, FormEvent, SetStateAction, useState } from "react"
+import { StepTwoFieldData } from "~/lib/data"
+import { FormEvent, useState } from "react"
+import { UserInput } from "~/lib/types"
+import { StepOne } from "./StepOne"
+import { StepProps } from "~/lib/PropTypes"
+import { FormHeading } from "./FormElements"
 
-const ErrorMessage = ({
-  errors,
-  fieldName,
-}: {
-  errors: FieldErrors<FieldValues>
-  fieldName: string
-}) => {
-  const message = errors[fieldName]?.message as string
-  return <p className=" text-primary-strawberry-red">{message}</p>
-}
+const StepTwoSchema = z.object({ plan: z.enum(["arcade", "advanced", "pro"]) })
+type StepTwoFields = z.infer<typeof StepTwoSchema>
 
-const FormHeading = ({ step, align }: { step: number; align?: string }) => {
-  const { heading, info } = FormHeadingData[step]!
-  return (
-    <>
-      <h1 className="text-2xl font-bold text-primary-marine-blue">{heading}</h1>
-      <p
-        className={`text-neutral-cool-gray ${
-          align === "center" && "text-center"
-        }`}
-      >
-        {info}
-      </p>
-    </>
-  )
-}
-
-const StepOneSchema = z.object({
-  name: z
-    .string()
-    .regex(/^[A-Za-z]*$/, "Cannot contain digits")
-    .min(2, "Too short"),
-  emailAddress: z.string().email(),
-  phoneNumber: z
-    .string()
-    .regex(/\d*$/, "Only digits allow")
-    .min(10, "Must be 10 digits"),
-})
-
-type StepOneFieldType = z.infer<typeof StepOneSchema>
-
-type StepProps = {
-  step: number
-  setStep: Dispatch<SetStateAction<number>>
-  userData: UserInput
-  setUserData: Dispatch<SetStateAction<UserInput>>
-}
-
-export const StepOne = (props: StepProps) => {
-  const { step, setStep, userData, setUserData } = props
+const StepTwo = (props: StepProps) => {
+  const { step, setStep, userInput, setUserInput } = props
+  const [billCycle, setBillCycle] = useState<"monthly" | "yearly">("monthly")
   const {
-    register,
-
-    watch,
     getValues,
+    register,
+    setValue,
+    watch,
     formState: { errors, isValid },
-  } = useForm<StepOneFieldType>({
-    mode: "onTouched",
-    resolver: zodResolver(StepOneSchema),
+  } = useForm<StepTwoFields>({
+    resolver: zodResolver(StepTwoSchema),
   })
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log("getValues", getValues())
-    setUserData({ ...getValues() })
-    console.log(userData)
+    setUserInput((prev) => {
+      return { ...prev, plan: getValues("plan") }
+    })
 
     setStep(step + 1)
-
-    return
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormHeading step={step} />
-      {StepOneFieldData.map((item) => {
-        const { fieldName, label, placeholder } = item
-
-        return (
-          <div className="space-1 flex flex-col py-1" key={label}>
-            <div className="flex justify-between text-sm text-primary-marine-blue">
-              <label className="">{label}</label>
-              {errors && (
-                <ErrorMessage errors={errors} fieldName={fieldName ?? ""} />
-              )}
-            </div>
-            <input
-              placeholder={placeholder}
-              className="rounded-lg border-[1px] border-neutral-cool-gray py-2 pl-3"
-              type="text"
-              {...register(fieldName)}
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
+        <FormHeading step={step} />
+        {StepTwoFieldData.map((item) => {
+          const { fieldName, label, monthlyPrice } = item
+          const yearlyPrice = monthlyPrice * 10
+          return (
+            <label
+              key={label}
+              className={`flex cursor-pointer space-x-3 overflow-hidden rounded-lg border-[1.5px]  p-4 transition-colors hover:border-primary-purplish-blue ${
+                getValues("plan") === fieldName
+                  ? "border-primary-purplish-blue bg-neutral-light-gray/50"
+                  : "border-neutral-cool-gray"
+              }`}
+              {...register("plan")}
+              onClick={() => {
+                setValue("plan", fieldName)
+              }}
+            >
+              <Image
+                src={`assets/images/icon-${label}.svg`}
+                width={40}
+                height={40}
+                alt={`${label} icon`}
+              />
+              <div className="w-full">
+                <label className="font-bold capitalize text-primary-marine-blue">
+                  {label}
+                </label>
+                <div className="flex items-center justify-between text-neutral-cool-gray">
+                  <p>
+                    ${billCycle === "monthly" ? monthlyPrice : yearlyPrice}
+                    /mo
+                  </p>
+                  <p
+                    className={`text-sm text-primary-marine-blue transition-all ${
+                      billCycle === "yearly"
+                        ? "translate-y-[0%] opacity-100"
+                        : "translate-y-[100%] opacity-0"
+                    } `}
+                  >
+                    2 months free
+                  </p>
+                </div>
+              </div>
+            </label>
+          )
+        })}
+        <div className="flex justify-evenly rounded-lg bg-neutral-magnolia py-4">
+          <p
+            className={`w-20 text-center transition-all ${
+              billCycle === "monthly"
+                ? "font-bold text-primary-marine-blue"
+                : "text-neutral-cool-gray"
+            }`}
+          >
+            Monthly
+          </p>
+          <button
+            onClick={() =>
+              setBillCycle(billCycle === "yearly" ? "monthly" : "yearly")
+            }
+            className="relative h-6 w-12 rounded-full bg-primary-marine-blue"
+          >
+            <div
+              className={`absolute top-[50%] mx-1 h-4 w-4 translate-y-[-50%] rounded-full bg-neutral-magnolia transition-all  ${
+                billCycle === "monthly" ? "left-[0%]" : "left-[50%]"
+              }`}
             />
-          </div>
-        )
-      })}
+          </button>
+          <p
+            className={`w-20 text-center transition-all ${
+              billCycle === "yearly"
+                ? "font-bold text-primary-marine-blue"
+                : "text-neutral-cool-gray"
+            }`}
+          >
+            Yearly
+          </p>
+        </div>
+        <div className="flex justify-between">
+          <button
+            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+            type="button"
+            onClick={() => setStep(step - 1)}
+          >
+            Go Back
+          </button>
+          <button
+            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+            disabled={!isValid}
+            type="submit"
+          >
+            Next
+          </button>
+        </div>
+      </form>
 
-      <div className="flex justify-between">
-        <button type="button">go Back</button>
-        <button
-          type="submit"
-          disabled={!isValid}
-          className={`${isValid ? "opaicty-100" : "opacity-10"}`}
-        >
-          next
-        </button>
-      </div>
-    </form>
+      <pre>{JSON.stringify(watch(), null, 2)} </pre>
+      <pre>{isValid ? "valid" : "not valid"} </pre>
+    </>
   )
-}
-
-const StepTwo = (props: StepProps) => {
-  return <div>steptwo</div>
-}
-
-type UserInput = {
-  name?: string
-  emailAddress?: string
-  phoneNumber?: string
 }
 
 export const Form = () => {
   const [userInput, setUserInput] = useState<UserInput>({})
   const [step, setStep] = useState(0)
 
+  console.log(userInput)
+
   return (
-    <div>
+    <div className="flex flex-col space-y-4 px-6 py-8">
       {step === 0 && (
         <StepOne
           step={step}
           setStep={setStep}
-          userData={userInput}
-          setUserData={setUserInput}
+          userInput={userInput}
+          setUserInput={setUserInput}
         />
       )}
       {step === 1 && (
         <StepTwo
           step={step}
           setStep={setStep}
-          userData={userInput}
-          setUserData={setUserInput}
+          userInput={userInput}
+          setUserInput={setUserInput}
         />
       )}
+
+      <pre>{JSON.stringify(userInput, null, 2)}</pre>
     </div>
   )
 }
