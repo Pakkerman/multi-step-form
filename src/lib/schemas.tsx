@@ -48,4 +48,11 @@ export const StepOneSchema = z.object({
     .min(10, "Must be 10 digits"),
 })
 
+export const StepTwoSchema = z.object({
+  plan: z.enum(["arcade", "advanced", "pro"]),
+})
+export const StepThreeSchema = z.object({ addons: z.array(z.string()).min(1) })
+
 export type StepOneFields = z.infer<typeof StepOneSchema>
+export type StepTwoFields = z.infer<typeof StepTwoSchema>
+export type StepThreeFields = z.infer<typeof StepThreeSchema>

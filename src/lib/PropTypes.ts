@@ -6,4 +6,6 @@ export type StepProps = {
   setStep: Dispatch<SetStateAction<number>>
   userInput: UserInput
   setUserInput: Dispatch<SetStateAction<UserInput>>
+  billCycle: "monthly" | "yearly"
+  setBillCycle: Dispatch<SetStateAction<"monthly" | "yearly">>
 }

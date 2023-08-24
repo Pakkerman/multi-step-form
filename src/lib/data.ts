@@ -53,6 +53,34 @@ export const StepTwoFieldData: StepTwoFieldData = [
   { fieldName: "pro", label: "Pro", monthlyPrice: 15 },
 ]
 
+type StepThreeFieldData = Array<{
+  fieldName: "onlineService" | "largerStorage" | "CustomizableProfile"
+  label: string
+  info: string
+  monthlyPrice: number
+}>
+
+export const StepThreeFieldData: StepThreeFieldData = [
+  {
+    fieldName: "onlineService",
+    label: "Online Service",
+    info: "Access to multiplayer games",
+    monthlyPrice: 1,
+  },
+  {
+    fieldName: "largerStorage",
+    label: "Larger Storage",
+    info: "Extra 1TB of cloud storage",
+    monthlyPrice: 2,
+  },
+  {
+    fieldName: "CustomizableProfile",
+    label: "Customizable profile",
+    info: "Custom theme on your profile",
+    monthlyPrice: 2,
+  },
+]
+
 // type FormFieldDataType = {
 //   [key: string]: Array<{
 //     fieldName: string

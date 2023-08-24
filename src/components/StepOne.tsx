@@ -6,6 +6,7 @@ import { StepOneFieldData } from "~/lib/data"
 import { StepOneFields, StepOneSchema } from "~/lib/schemas"
 import { ErrorMessage, FormHeading } from "./FormElements"
 import { StepProps } from "~/lib/PropTypes"
+import { Chau_Philomene_One } from "next/font/google"
 
 export const StepOne = (props: StepProps) => {
   const {
@@ -16,13 +17,17 @@ export const StepOne = (props: StepProps) => {
   } = props
   const {
     register,
-
     watch,
     getValues,
     formState: { errors, isValid },
   } = useForm<StepOneFields>({
     mode: "onTouched",
     resolver: zodResolver(StepOneSchema),
+    defaultValues: {
+      name: "app",
+      emailAddress: "e@email.com",
+      phoneNumber: "1231231231",
+    },
   })
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
