@@ -22,10 +22,10 @@ export function calculateAddons(addonName: string, billCycle: string): number {
     case "Online Service":
       price = 1
       break
-    case "Larger storage":
+    case "Larger Storage":
       price = 2
       break
-    case "Customizable profile":
+    case "Customizable Profile":
       price = 2
       break
   }

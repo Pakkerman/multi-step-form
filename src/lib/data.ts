@@ -75,7 +75,7 @@ export const StepThreeFieldData: StepThreeFieldData = [
   },
   {
     fieldName: "CustomizableProfile",
-    label: "Customizable profile",
+    label: "Customizable Profile",
     info: "Custom theme on your profile",
     monthlyPrice: 2,
   },

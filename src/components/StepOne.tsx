@@ -32,13 +32,10 @@ export const StepOne = (props: StepProps) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log("getValues", getValues())
-    setUserData({ ...getValues() })
-    console.log(userData)
-
+    setUserData((prev) => {
+      return { ...prev, ...getValues() }
+    })
     setStep(step + 1)
-
-    return
   }
 
   return (

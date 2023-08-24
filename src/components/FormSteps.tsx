@@ -1,121 +1,83 @@
-import { useForm } from "react-hook-form"
+import { useState } from "react"
+import type { UserInput } from "~/lib/types"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { StepThreeFieldData, StepTwoFieldData } from "~/lib/data"
-import { FormEvent, useState } from "react"
-import { UserInput } from "~/lib/types"
 import { StepOne } from "./StepOne"
-import { StepProps } from "~/lib/PropTypes"
-import { FormHeading } from "./FormElements"
 import { StepTwo } from "./StepTwo"
-import { StepThreeFields, StepThreeSchema } from "~/lib/schemas"
+import { StepThree } from "./StepThree"
+import {
+  calculatePlan,
+  formatBillCycle,
+  calculateAddons,
+  calculateTotal,
+} from "~/helpers/helpers"
+import { FormHeading } from "./FormElements"
+import { StepProps } from "~/lib/PropTypes"
 
-const StepThree = (props: StepProps) => {
-  const { step, setStep, userInput, setUserInput, billCycle } = props
-
-  const {
-    register,
-    formState: { isValid },
-    setValue,
-    getValues,
-    watch,
-  } = useForm<StepThreeFields>({
-    resolver: zodResolver(StepThreeSchema),
-    defaultValues: { addons: [] },
-  })
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    setStep(step + 1)
-    setUserInput((prev) => {
-      return { ...prev, addons: getValues("addons") }
-    })
-  }
+const StepFour = (props: StepProps) => {
+  const { step, setStep, userInput, setUserInput, billCycle, setBillCycle } =
+    props
 
   return (
     <>
-      <FormHeading step={step} />
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
-        <div className="space-y-4">
-          {StepThreeFieldData.map((item) => {
-            const { label, info, monthlyPrice } = item
-
-            const checked = watch("addons").includes(label)
-
-            let price = monthlyPrice
-            if (billCycle === "yearly") price *= 10
-
-            return (
-              <label
-                key={label}
-                htmlFor={label}
-                className={`flex cursor-pointer space-x-4 rounded-lg border-[1.5px]  px-4 py-3 transition-all
-                      hover:border-primary-purplish-blue
-                      ${
-                        checked
-                          ? " border-primary-purplish-blue bg-neutral-light-gray/20"
-                          : "border-neutral-light-gray"
-                      }`}
+      <div className="flex flex-col space-y-4">
+        <FormHeading step={step} />
+        <div className="bg-neutral-magnolia p-4">
+          <div className="flex justify-between">
+            <div>
+              <h1 className=" font-bold capitalize text-primary-marine-blue">
+                {userInput.plan} ({billCycle})
+              </h1>
+              <button
+                className="text-neutral-cool-gray underline"
+                type="button"
+                onClick={() => setStep(0)}
               >
-                <input
-                  className="w-6 accent-primary-purplish-blue outline-none transition-all "
-                  id={label}
-                  type="checkbox"
-                  {...register("addons")}
-                  value={label}
-                  onClick={() => {
-                    checked
-                      ? setValue(
-                          "addons",
-                          watch("addons").filter((item) => item !== label)
-                        )
-                      : setValue("addons", [...watch("addons"), label])
-                  }}
-                  checked={checked}
-                />
-                <div className="flex w-full items-center justify-between">
-                  <div>
-                    <p className="font-bold text-primary-marine-blue">
-                      {label}
-                    </p>
-                    <p className="text-sm text-neutral-cool-gray">{info}</p>
-                  </div>
-                  <p className="text-sm text-primary-purplish-blue">
-                    +${price}/mo
-                  </p>
-                </div>
-              </label>
-            )
-          })}
+                Change
+              </button>
+            </div>
+            <p className="self-end font-bold text-primary-marine-blue">
+              ${calculatePlan(userInput.plan, billCycle)}/
+              {formatBillCycle(billCycle)}
+            </p>
+          </div>
+          <hr className="my-4 border-[1px] "></hr>
+          <ul className="space-y-4">
+            {userInput.addons.map((item) => (
+              <li key={item} className="flex justify-between">
+                <p className="text-neutral-cool-gray">{item}</p>
+                <p className="text-primary-marine-blue">
+                  +${calculateAddons(item, billCycle)}/
+                  {formatBillCycle(billCycle)}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="flex justify-between">
-          <button
-            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-            type="button"
-            onClick={() => setStep(step - 1)}
-          >
-            Go Back
-          </button>
-          <button
-            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-            disabled={!isValid}
-            type="submit"
-          >
-            Next
-          </button>
+        <div className="flex justify-between p-4 text-neutral-cool-gray">
+          <p>Total (per {billCycle.slice(0, -2)})</p>
+          <p>
+            +$
+            {calculateTotal(userInput.plan, userInput.addons, billCycle)}/
+            {formatBillCycle(billCycle)}
+          </p>
         </div>
-      </form>
+      </div>
     </>
   )
 }
 
-export const Form = () => {
-  const [userInput, setUserInput] = useState<UserInput>({})
-  const [billCycle, setBillCycle] = useState<"monthly" | "yearly">("monthly")
-  const [step, setStep] = useState(2)
+const initialUserInput = {
+  name: "",
+  emailAddress: "",
+  phoneNumber: "",
+  plan: "",
+  addons: [],
+}
 
-  console.log(userInput)
+export const Form = () => {
+  const [userInput, setUserInput] = useState<UserInput>(initialUserInput)
+  const [billCycle, setBillCycle] = useState<"monthly" | "yearly">("monthly")
+  const [step, setStep] = useState(0)
 
   return (
     <div className="flex flex-col space-y-4 px-6 py-8">
@@ -141,6 +103,16 @@ export const Form = () => {
       )}
       {step === 2 && (
         <StepThree
+          step={step}
+          setStep={setStep}
+          userInput={userInput}
+          setUserInput={setUserInput}
+          billCycle={billCycle}
+          setBillCycle={setBillCycle}
+        />
+      )}
+      {step === 3 && (
+        <StepFour
           step={step}
           setStep={setStep}
           userInput={userInput}

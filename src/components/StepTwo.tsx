@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState, FormEvent } from "react"
+import { type FormEvent } from "react"
 import { useForm } from "react-hook-form"
 import { StepProps } from "~/lib/PropTypes"
 import { StepTwoFieldData } from "~/lib/data"
