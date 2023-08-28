@@ -22,10 +22,10 @@ export default function Home() {
         <section className="flex h-40 items-center justify-center md:hidden">
           <MobileProgress />
         </section>
-        <section className="w-[90%] max-w-[390px] rounded-xl bg-neutral-alabaster drop-shadow-md md:flex md:max-w-[800px] md:flex-row md:items-center ">
-          <div className="relative hidden h-[568px] w-[274px] md:block">
+        <section className="w-[90%] max-w-[390px] rounded-xl bg-neutral-alabaster drop-shadow-md md:flex md:min-h-[650px] md:max-w-[800px] md:flex-row md:items-center">
+          <div className="relative hidden h-[650px] w-[274px] md:block">
             <DesktopProgress />
-            <div className="absolute top-0 z-[-100] h-[568px] w-[274px] p-4">
+            <div className="absolute top-0 z-[-100] h-[650px] w-[274px] p-4">
               <Image
                 className="h-full rounded-xl object-cover"
                 src="/assets/images/bg-sidebar-desktop.svg"
@@ -37,7 +37,9 @@ export default function Home() {
             </div>
           </div>
 
-          <Form />
+          <div className="h-[600px] w-full md:h-full md:w-[60%]">
+            <Form />
+          </div>
           {/* <Form formRef={formRef} setSubmitting={setSubmitting} /> */}
         </section>
         <section className="flex h-20 w-full items-center justify-end bg-neutral-alabaster px-4 md:hidden">

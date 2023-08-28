@@ -1,71 +1,12 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import type { UserInput } from "~/lib/types"
 
 import { StepOne } from "./StepOne"
 import { StepTwo } from "./StepTwo"
 import { StepThree } from "./StepThree"
-import {
-  calculatePlan,
-  formatBillCycle,
-  calculateAddons,
-  calculateTotal,
-} from "~/helpers/helpers"
-import { FormHeading } from "./FormElements"
-import { StepProps } from "~/lib/PropTypes"
+import { StepFour } from "./StepFour"
+
 import { useFormStepContext } from "~/contexts/FormStepContext"
-
-const StepFour = (props: StepProps) => {
-  const { step, setStep } = useFormStepContext()
-  const { userInput, setUserInput, billCycle, setBillCycle } = props
-
-  return (
-    <>
-      <div className="flex flex-col space-y-4">
-        <FormHeading step={step} />
-        <div className="bg-neutral-magnolia p-4">
-          <div className="flex justify-between">
-            <div>
-              <h1 className=" font-bold capitalize text-primary-marine-blue">
-                {userInput.plan} ({billCycle})
-              </h1>
-              <button
-                className="text-neutral-cool-gray underline"
-                type="button"
-                onClick={() => setStep(0)}
-              >
-                Change
-              </button>
-            </div>
-            <p className="self-end font-bold text-primary-marine-blue">
-              ${calculatePlan(userInput.plan, billCycle)}/
-              {formatBillCycle(billCycle)}
-            </p>
-          </div>
-          <hr className="my-4 border-[1px] "></hr>
-          <ul className="space-y-4">
-            {userInput.addons.map((item) => (
-              <li key={item} className="flex justify-between">
-                <p className="text-neutral-cool-gray">{item}</p>
-                <p className="text-primary-marine-blue">
-                  +${calculateAddons(item, billCycle)}/
-                  {formatBillCycle(billCycle)}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="flex justify-between p-4 text-neutral-cool-gray">
-          <p>Total (per {billCycle.slice(0, -2)})</p>
-          <p>
-            +$
-            {calculateTotal(userInput.plan, userInput.addons, billCycle)}/
-            {formatBillCycle(billCycle)}
-          </p>
-        </div>
-      </div>
-    </>
-  )
-}
 
 const initialUserInput = {
   name: "",
@@ -83,7 +24,7 @@ export const Form = () => {
   // const { formRef, setSubmitting } = props
 
   return (
-    <div className="flex flex-col space-y-4 px-6 py-8">
+    <div className="flex h-full flex-col space-y-4 p-6">
       {step === 0 && (
         <StepOne
           userInput={userInput}
@@ -116,9 +57,6 @@ export const Form = () => {
           setBillCycle={setBillCycle}
         />
       )}
-
-      {/* <pre>{JSON.stringify(userInput, null, 2)}</pre> */}
-      <pre>{step}</pre>
     </div>
   )
 }

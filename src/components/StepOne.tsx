@@ -35,28 +35,32 @@ export const StepOne = (props: StepProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormHeading step={step} />
-      {StepOneFieldData.map((item) => {
-        const { fieldName, label, placeholder } = item
-
-        return (
-          <div className="space-1 flex flex-col py-1" key={label}>
-            <div className="flex justify-between text-sm text-primary-marine-blue">
-              <label className="">{label}</label>
-              {errors && (
-                <ErrorMessage errors={errors} fieldName={fieldName ?? ""} />
-              )}
+    <form
+      onSubmit={handleSubmit}
+      className="flex h-full flex-col md:justify-between"
+    >
+      <FormHeading />
+      <div className=" h-full space-y-2 md:pt-[10%]">
+        {StepOneFieldData.map((item) => {
+          const { fieldName, label, placeholder } = item
+          return (
+            <div className="flex flex-col space-y-1 py-1" key={label}>
+              <div className="flex justify-between text-sm text-primary-marine-blue">
+                <label className="">{label}</label>
+                {errors && (
+                  <ErrorMessage errors={errors} fieldName={fieldName ?? ""} />
+                )}
+              </div>
+              <input
+                placeholder={placeholder}
+                className="rounded-lg border-[1px] border-neutral-cool-gray py-2 pl-3"
+                type="text"
+                {...register(fieldName)}
+              />
             </div>
-            <input
-              placeholder={placeholder}
-              className="rounded-lg border-[1px] border-neutral-cool-gray py-2 pl-3"
-              type="text"
-              {...register(fieldName)}
-            />
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
 
       <div className="flex justify-end">
         <button

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { StepProps } from "~/lib/PropTypes"
 import { StepThreeFieldData } from "~/lib/data"
 import { StepThreeFields, StepThreeSchema } from "~/lib/schemas"
-import { FormHeading } from "./FormElements"
+import { BackButton, FormHeading } from "./FormElements"
 import { useFormStepContext } from "~/contexts/FormStepContext"
 
 export const StepThree = (props: StepProps) => {
@@ -33,9 +33,12 @@ export const StepThree = (props: StepProps) => {
 
   return (
     <>
-      <FormHeading step={step} />
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
-        <div className="space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex h-full flex-col md:justify-between"
+      >
+        <FormHeading />
+        <ul className=" flex h-full flex-col space-y-2 ">
           {StepThreeFieldData.map((item) => {
             const { label, info, monthlyPrice } = item
 
@@ -86,15 +89,9 @@ export const StepThree = (props: StepProps) => {
               </label>
             )
           })}
-        </div>
+        </ul>
         <div className="flex justify-between">
-          <button
-            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-            type="button"
-            onClick={() => setStep(step - 1)}
-          >
-            Go Back
-          </button>
+          <BackButton onClick={() => setStep(step - 1)} />
           <button
             className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
             disabled={!isValid}
