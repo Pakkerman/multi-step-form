@@ -31,7 +31,7 @@ export const FormSchemas = [
       .string()
       .regex(/\d*$/, "Only digits allow")
       .min(10, "Must be 10 digits"),
-    plan: z.enum(["arcade", "advanced", "pro"]),
+    plan: z.string(),
     addons: z.array(z.string()),
   }),
 ]
@@ -49,7 +49,7 @@ export const StepOneSchema = z.object({
 })
 
 export const StepTwoSchema = z.object({
-  plan: z.enum(["arcade", "advanced", "pro"]),
+  plan: z.string(),
 })
 export const StepThreeSchema = z.object({ addons: z.array(z.string()).min(1) })
 

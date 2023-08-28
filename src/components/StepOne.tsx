@@ -2,33 +2,33 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { StepOneFieldData } from "~/lib/data"
-import { StepOneFields, StepOneSchema } from "~/lib/schemas"
+import { type StepOneFields, StepOneSchema } from "~/lib/schemas"
 import { ErrorMessage, FormHeading } from "./FormElements"
-import { StepProps } from "~/lib/PropTypes"
 import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useUserInputContext } from "~/contexts/UserInputContext"
 
-export const StepOne = (props: StepProps) => {
+export const StepOne = () => {
   const { step, setStep } = useFormStepContext()
-  const { userInput: userData, setUserInput: setUserData } = props
+  const { userInput, setUserInput } = useUserInputContext()
+  const { name, emailAddress, phoneNumber } = userInput
 
   const {
     register,
-    watch,
     getValues,
     formState: { errors, isValid },
   } = useForm<StepOneFields>({
     mode: "onTouched",
     resolver: zodResolver(StepOneSchema),
     defaultValues: {
-      name: "app",
-      emailAddress: "e@email.com",
-      phoneNumber: "1231231231",
+      name,
+      emailAddress,
+      phoneNumber,
     },
   })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setUserData((prev) => {
+    setUserInput((prev) => {
       return { ...prev, ...getValues() }
     })
     setStep(step + 1)

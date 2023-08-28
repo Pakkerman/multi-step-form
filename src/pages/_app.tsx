@@ -6,6 +6,7 @@ import "~/styles/globals.css"
 import { WindowObserver } from "~/helpers/WindowObserver"
 import { ColorPalette } from "~/helpers/ColorPalette"
 import { FormStepContextProvider } from "~/contexts/FormStepContext"
+import { UserInputContextProvider } from "~/contexts/UserInputContext"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -15,10 +16,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta name="description" content="Multi Step Form with Create T3 App" />
         <link href="favicon.png" />
       </Head>
+
       <FormStepContextProvider>
-        <WindowObserver />
-        <ColorPalette />
-        <Component {...pageProps} />
+        <UserInputContextProvider>
+          <WindowObserver />
+          <ColorPalette />
+          <Component {...pageProps} />
+        </UserInputContextProvider>
       </FormStepContextProvider>
     </>
   )

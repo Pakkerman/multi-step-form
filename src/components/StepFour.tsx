@@ -5,12 +5,12 @@ import {
   calculateTotal,
 } from "~/helpers/helpers"
 import { BackButton, FormHeading } from "./FormElements"
-import { StepProps } from "~/lib/PropTypes"
 import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useUserInputContext } from "~/contexts/UserInputContext"
 
-export const StepFour = (props: StepProps) => {
+export const StepFour = () => {
   const { step, setStep } = useFormStepContext()
-  const { userInput, setUserInput, billCycle, setBillCycle } = props
+  const { userInput, billCycle } = useUserInputContext()
 
   return (
     <>

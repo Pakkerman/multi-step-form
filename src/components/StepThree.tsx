@@ -1,15 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FormEvent } from "react"
 import { useForm } from "react-hook-form"
-import { StepProps } from "~/lib/PropTypes"
 import { StepThreeFieldData } from "~/lib/data"
-import { StepThreeFields, StepThreeSchema } from "~/lib/schemas"
+import { type StepThreeFields, StepThreeSchema } from "~/lib/schemas"
 import { BackButton, FormHeading } from "./FormElements"
 import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useUserInputContext } from "~/contexts/UserInputContext"
 
-export const StepThree = (props: StepProps) => {
+export const StepThree = () => {
   const { step, setStep } = useFormStepContext()
-  const { userInput, setUserInput, billCycle } = props
+  const { userInput, setUserInput, billCycle } = useUserInputContext()
+  const { addons } = userInput
 
   const {
     register,
@@ -19,10 +19,10 @@ export const StepThree = (props: StepProps) => {
     watch,
   } = useForm<StepThreeFields>({
     resolver: zodResolver(StepThreeSchema),
-    defaultValues: { addons: [] },
+    defaultValues: { addons },
   })
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     setStep(step + 1)

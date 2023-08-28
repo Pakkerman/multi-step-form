@@ -1,17 +1,18 @@
 import Image from "next/image"
-
 import { zodResolver } from "@hookform/resolvers/zod"
-import { type FormEvent } from "react"
 import { useForm } from "react-hook-form"
-import { StepProps } from "~/lib/PropTypes"
+
 import { StepTwoFieldData } from "~/lib/data"
 import { BackButton, FormHeading } from "./FormElements"
-import { StepTwoFields, StepTwoSchema } from "~/lib/schemas"
+import { type StepTwoFields, StepTwoSchema } from "~/lib/schemas"
 import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useUserInputContext } from "~/contexts/UserInputContext"
 
-export const StepTwo = (props: StepProps) => {
+export const StepTwo = () => {
   const { step, setStep } = useFormStepContext()
-  const { userInput, setUserInput, billCycle, setBillCycle } = props
+  const { userInput, setUserInput, billCycle, setBillCycle } =
+    useUserInputContext()
+  const { plan } = userInput
 
   const {
     getValues,
@@ -21,9 +22,10 @@ export const StepTwo = (props: StepProps) => {
     formState: { isValid },
   } = useForm<StepTwoFields>({
     resolver: zodResolver(StepTwoSchema),
+    defaultValues: { plan },
   })
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = () => {
     setUserInput((prev) => {
       return { ...prev, plan: getValues("plan") }
     })
