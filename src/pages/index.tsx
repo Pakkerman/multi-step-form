@@ -2,6 +2,7 @@ import Image from "next/image"
 import { useRef, useState } from "react"
 import { MobileProgress, DesktopProgress } from "../components/Prograss"
 import { Form } from "~/components/FormSteps"
+import { useFormStepContext } from "~/contexts/FormStepContext"
 
 export default function Home() {
   const formRef = useRef<HTMLFormElement>(null)

@@ -7,10 +7,11 @@ import { StepProps } from "~/lib/PropTypes"
 import { StepTwoFieldData } from "~/lib/data"
 import { FormHeading } from "./FormElements"
 import { StepTwoFields, StepTwoSchema } from "~/lib/schemas"
+import { useFormStepContext } from "~/contexts/FormStepContext"
 
 export const StepTwo = (props: StepProps) => {
-  const { step, setStep, userInput, setUserInput, billCycle, setBillCycle } =
-    props
+  const { step, setStep } = useFormStepContext()
+  const { userInput, setUserInput, billCycle, setBillCycle } = props
 
   const {
     getValues,

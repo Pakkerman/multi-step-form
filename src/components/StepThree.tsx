@@ -5,9 +5,11 @@ import { StepProps } from "~/lib/PropTypes"
 import { StepThreeFieldData } from "~/lib/data"
 import { StepThreeFields, StepThreeSchema } from "~/lib/schemas"
 import { FormHeading } from "./FormElements"
+import { useFormStepContext } from "~/contexts/FormStepContext"
 
 export const StepThree = (props: StepProps) => {
-  const { step, setStep, userInput, setUserInput, billCycle } = props
+  const { step, setStep } = useFormStepContext()
+  const { userInput, setUserInput, billCycle } = props
 
   const {
     register,

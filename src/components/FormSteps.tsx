@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import type { UserInput } from "~/lib/types"
 
 import { StepOne } from "./StepOne"
@@ -12,10 +12,11 @@ import {
 } from "~/helpers/helpers"
 import { FormHeading } from "./FormElements"
 import { StepProps } from "~/lib/PropTypes"
+import { useFormStepContext } from "~/contexts/FormStepContext"
 
 const StepFour = (props: StepProps) => {
-  const { step, setStep, userInput, setUserInput, billCycle, setBillCycle } =
-    props
+  const { step, setStep } = useFormStepContext()
+  const { userInput, setUserInput, billCycle, setBillCycle } = props
 
   return (
     <>
@@ -75,16 +76,16 @@ const initialUserInput = {
 }
 
 export const Form = () => {
+  const { step } = useFormStepContext()
   const [userInput, setUserInput] = useState<UserInput>(initialUserInput)
   const [billCycle, setBillCycle] = useState<"monthly" | "yearly">("monthly")
-  const [step, setStep] = useState(0)
+
+  // const { formRef, setSubmitting } = props
 
   return (
     <div className="flex flex-col space-y-4 px-6 py-8">
       {step === 0 && (
         <StepOne
-          step={step}
-          setStep={setStep}
           userInput={userInput}
           setUserInput={setUserInput}
           billCycle={billCycle}
@@ -93,8 +94,6 @@ export const Form = () => {
       )}
       {step === 1 && (
         <StepTwo
-          step={step}
-          setStep={setStep}
           userInput={userInput}
           setUserInput={setUserInput}
           billCycle={billCycle}
@@ -103,8 +102,6 @@ export const Form = () => {
       )}
       {step === 2 && (
         <StepThree
-          step={step}
-          setStep={setStep}
           userInput={userInput}
           setUserInput={setUserInput}
           billCycle={billCycle}
@@ -113,8 +110,6 @@ export const Form = () => {
       )}
       {step === 3 && (
         <StepFour
-          step={step}
-          setStep={setStep}
           userInput={userInput}
           setUserInput={setUserInput}
           billCycle={billCycle}
@@ -122,7 +117,8 @@ export const Form = () => {
         />
       )}
 
-      <pre>{JSON.stringify(userInput, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(userInput, null, 2)}</pre> */}
+      <pre>{step}</pre>
     </div>
   )
 }

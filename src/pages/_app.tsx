@@ -5,6 +5,7 @@ import "~/styles/globals.css"
 // import { Footer } from "~/components/Footer"
 import { WindowObserver } from "~/helpers/WindowObserver"
 import { ColorPalette } from "~/helpers/ColorPalette"
+import { FormStepContextProvider } from "~/contexts/FormStepContext"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -14,9 +15,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta name="description" content="Multi Step Form with Create T3 App" />
         <link href="favicon.png" />
       </Head>
-      <WindowObserver />
-      <ColorPalette />
-      <Component {...pageProps} />
+      <FormStepContextProvider>
+        <WindowObserver />
+        <ColorPalette />
+        <Component {...pageProps} />
+      </FormStepContextProvider>
     </>
   )
 }

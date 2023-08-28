@@ -1,20 +1,16 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import type { FormEvent } from "react"
 import { StepOneFieldData } from "~/lib/data"
 import { StepOneFields, StepOneSchema } from "~/lib/schemas"
 import { ErrorMessage, FormHeading } from "./FormElements"
 import { StepProps } from "~/lib/PropTypes"
-import { Chau_Philomene_One } from "next/font/google"
+import { useFormStepContext } from "~/contexts/FormStepContext"
 
 export const StepOne = (props: StepProps) => {
-  const {
-    step,
-    setStep,
-    userInput: userData,
-    setUserInput: setUserData,
-  } = props
+  const { step, setStep } = useFormStepContext()
+  const { userInput: userData, setUserInput: setUserData } = props
+
   const {
     register,
     watch,
@@ -30,7 +26,7 @@ export const StepOne = (props: StepProps) => {
     },
   })
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setUserData((prev) => {
       return { ...prev, ...getValues() }
