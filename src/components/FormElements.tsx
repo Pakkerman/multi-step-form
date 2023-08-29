@@ -1,5 +1,5 @@
 import type { FieldErrors, FieldValues } from "react-hook-form"
-import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 import { FormHeadingData } from "~/lib/data"
 
 type FormHeadingProps = {
@@ -7,7 +7,7 @@ type FormHeadingProps = {
 }
 
 export function FormHeading(props: FormHeadingProps) {
-  const { step } = useFormStepContext()
+  const { step } = useFormControlContext()
   const { align } = props
   const { heading, info } = FormHeadingData[step]!
   return (
@@ -35,6 +35,26 @@ export function ErrorMessage(props: ErrorMessageProps) {
   const { errors, fieldName } = props
   const message = errors[fieldName]?.message as string
   return <p className=" text-primary-strawberry-red">{message}</p>
+}
+
+type NextButtonProps = {
+  disabled: boolean
+}
+
+export function NextButton(props: NextButtonProps) {
+  const { controlButtonRef } = useFormControlContext()
+  const { disabled } = props
+
+  return (
+    <button
+      ref={controlButtonRef}
+      className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia transition-all disabled:opacity-30"
+      disabled={disabled}
+      type="submit"
+    >
+      Next
+    </button>
+  )
 }
 
 type BackButtonProps = {

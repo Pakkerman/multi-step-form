@@ -1,10 +1,12 @@
 import Image from "next/image"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { MobileProgress, DesktopProgress } from "../components/Prograss"
-import { Form } from "~/components/FormSteps"
+import { Form } from "~/components/Form"
+import { useFormControlContext } from "~/contexts/FormControlContext"
+import { BackButton } from "~/components/FormElements"
 
 export default function Home() {
-  const formRef = useRef<HTMLFormElement>(null)
+  const { step, setStep, controlButtonRef, formValid } = useFormControlContext()
   const [submitting, setSubmitting] = useState<boolean>(false)
 
   return (
@@ -36,26 +38,31 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="h-[600px] w-full md:h-full md:w-[60%]">
+          <div className="h-[550px] w-full md:h-full md:w-[60%]">
             <Form />
           </div>
-          {/* <Form formRef={formRef} setSubmitting={setSubmitting} /> */}
         </section>
-        <section className="flex h-20 w-full items-center justify-end bg-neutral-alabaster px-4 md:hidden">
-          <button
-            type="submit"
-            disabled={submitting}
-            onClick={() => {
-              // programmatically submit form that is on another place
-              // useRef to get that form's reference and requestSubmit() will trigger form's onSubmit attribute
-              // not using submit() this will force submit and skip the any validation
-              if (formRef.current) formRef.current.requestSubmit()
-            }}
-            className={`text-alabaster font-sm rounded-md bg-primary-marine-blue px-4 py-2 text-neutral-magnolia
-            ${submitting ? "bg-slate-50" : "bg-primary-marine-blue "}`}
-          >
-            Next Step
-          </button>
+        <section className="h-20 w-full bg-neutral-alabaster px-4 md:hidden">
+          <div className="flex h-20 flex-row-reverse items-center justify-between px-2">
+            {step < 3 ? (
+              <button
+                type="submit"
+                disabled={!formValid}
+                onClick={() => controlButtonRef.current?.click()}
+                className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia transition-all disabled:opacity-30"
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+                type="submit"
+              >
+                Confirm
+              </button>
+            )}
+            {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}
+          </div>
         </section>
       </main>
     </>

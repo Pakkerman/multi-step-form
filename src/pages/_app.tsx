@@ -5,7 +5,7 @@ import "~/styles/globals.css"
 // import { Footer } from "~/components/Footer"
 import { WindowObserver } from "~/helpers/WindowObserver"
 import { ColorPalette } from "~/helpers/ColorPalette"
-import { FormStepContextProvider } from "~/contexts/FormStepContext"
+import { FormControlContextProvider } from "~/contexts/FormControlContext"
 import { UserInputContextProvider } from "~/contexts/UserInputContext"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -17,13 +17,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link href="favicon.png" />
       </Head>
 
-      <FormStepContextProvider>
+      <FormControlContextProvider>
         <UserInputContextProvider>
           <WindowObserver />
           <ColorPalette />
           <Component {...pageProps} />
         </UserInputContextProvider>
-      </FormStepContextProvider>
+      </FormControlContextProvider>
     </>
   )
 }

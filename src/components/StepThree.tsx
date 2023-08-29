@@ -1,13 +1,16 @@
+import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { StepThreeFieldData } from "~/lib/data"
-import { type StepThreeFields, StepThreeSchema } from "~/lib/schemas"
-import { BackButton, FormHeading } from "./FormElements"
-import { useFormStepContext } from "~/contexts/FormStepContext"
+
+import { BackButton, FormHeading, NextButton } from "./FormElements"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 import { useUserInputContext } from "~/contexts/UserInputContext"
 
+import { StepThreeFieldData } from "~/lib/data"
+import { type StepThreeFields, StepThreeSchema } from "~/lib/schemas"
+
 export const StepThree = () => {
-  const { step, setStep } = useFormStepContext()
+  const { step, setStep, setFormValid } = useFormControlContext()
   const { userInput, setUserInput, billCycle } = useUserInputContext()
   const { addons } = userInput
 
@@ -21,6 +24,10 @@ export const StepThree = () => {
     resolver: zodResolver(StepThreeSchema),
     defaultValues: { addons },
   })
+
+  useEffect(() => {
+    setFormValid(isValid)
+  }, [isValid, setFormValid])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -90,15 +97,9 @@ export const StepThree = () => {
             )
           })}
         </ul>
-        <div className="flex justify-between">
+        <div className="hidden justify-between md:flex">
           <BackButton onClick={() => setStep(step - 1)} />
-          <button
-            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-            disabled={!isValid}
-            type="submit"
-          >
-            Next
-          </button>
+          <NextButton disabled={!isValid} />
         </div>
       </form>
     </>

@@ -1,15 +1,17 @@
 import Image from "next/image"
+import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-import { StepTwoFieldData } from "~/lib/data"
-import { BackButton, FormHeading } from "./FormElements"
-import { type StepTwoFields, StepTwoSchema } from "~/lib/schemas"
-import { useFormStepContext } from "~/contexts/FormStepContext"
+import { BackButton, FormHeading, NextButton } from "./FormElements"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 import { useUserInputContext } from "~/contexts/UserInputContext"
 
+import { StepTwoFieldData } from "~/lib/data"
+import { type StepTwoFields, StepTwoSchema } from "~/lib/schemas"
+
 export const StepTwo = () => {
-  const { step, setStep } = useFormStepContext()
+  const { step, setStep, setFormValid } = useFormControlContext()
   const { userInput, setUserInput, billCycle, setBillCycle } =
     useUserInputContext()
   const { plan } = userInput
@@ -25,7 +27,12 @@ export const StepTwo = () => {
     defaultValues: { plan },
   })
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    setFormValid(isValid)
+  }, [isValid, setFormValid])
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     setUserInput((prev) => {
       return { ...prev, plan: getValues("plan") }
     })
@@ -125,15 +132,9 @@ export const StepTwo = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="hidden justify-between md:flex">
           <BackButton onClick={() => setStep(step - 1)} />
-          <button
-            className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-            disabled={!isValid}
-            type="submit"
-          >
-            Next
-          </button>
+          <NextButton disabled={!isValid} />
         </div>
       </form>
     </>

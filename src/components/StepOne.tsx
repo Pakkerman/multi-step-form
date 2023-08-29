@@ -1,14 +1,16 @@
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { StepOneFieldData } from "~/lib/data"
-import { type StepOneFields, StepOneSchema } from "~/lib/schemas"
-import { ErrorMessage, FormHeading } from "./FormElements"
-import { useFormStepContext } from "~/contexts/FormStepContext"
+import { ErrorMessage, FormHeading, NextButton } from "./FormElements"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 import { useUserInputContext } from "~/contexts/UserInputContext"
 
+import { type StepOneFields, StepOneSchema } from "~/lib/schemas"
+import { StepOneFieldData } from "~/lib/data"
+
 export const StepOne = () => {
-  const { step, setStep } = useFormStepContext()
+  const { step, setStep, setFormValid } = useFormControlContext()
   const { userInput, setUserInput } = useUserInputContext()
   const { name, emailAddress, phoneNumber } = userInput
 
@@ -25,6 +27,10 @@ export const StepOne = () => {
       phoneNumber,
     },
   })
+
+  useEffect(() => {
+    setFormValid(isValid)
+  }, [isValid, setFormValid])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -62,14 +68,8 @@ export const StepOne = () => {
         })}
       </div>
 
-      <div className="flex justify-end">
-        <button
-          className="rounded-lg bg-primary-marine-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-          disabled={!isValid}
-          type="submit"
-        >
-          Next
-        </button>
+      <div className="hidden justify-end md:flex ">
+        <NextButton disabled={!isValid} />
       </div>
     </form>
   )

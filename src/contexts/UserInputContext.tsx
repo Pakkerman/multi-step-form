@@ -28,7 +28,12 @@ export function UserInputContextProvider(props: UserInputContextProviderProps) {
 
   return (
     <UserInputContext.Provider
-      value={{ userInput, setUserInput, billCycle, setBillCycle }}
+      value={{
+        userInput,
+        setUserInput,
+        billCycle,
+        setBillCycle,
+      }}
     >
       {children}
     </UserInputContext.Provider>

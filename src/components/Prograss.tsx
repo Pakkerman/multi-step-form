@@ -1,7 +1,7 @@
-import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 
 export const MobileProgress = () => {
-  const { step } = useFormStepContext()
+  const { step } = useFormControlContext()
 
   return (
     <div className="flex justify-center space-x-4 md:hidden ">
@@ -24,7 +24,7 @@ export const MobileProgress = () => {
 }
 
 export const DesktopProgress = () => {
-  const { step } = useFormStepContext()
+  const { step } = useFormControlContext()
 
   return (
     <ul className="mx-8 hidden h-[50%] flex-col justify-between  p-4 pt-[20%] md:flex ">

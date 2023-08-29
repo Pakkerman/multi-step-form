@@ -5,11 +5,11 @@ import {
   calculateTotal,
 } from "~/helpers/helpers"
 import { BackButton, FormHeading } from "./FormElements"
-import { useFormStepContext } from "~/contexts/FormStepContext"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 import { useUserInputContext } from "~/contexts/UserInputContext"
 
 export const StepFour = () => {
-  const { step, setStep } = useFormStepContext()
+  const { step, setStep } = useFormControlContext()
   const { userInput, billCycle } = useUserInputContext()
 
   return (
@@ -58,7 +58,7 @@ export const StepFour = () => {
             </p>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="hidden justify-between md:flex">
           <BackButton onClick={() => setStep(step - 1)} />
           <button
             className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"

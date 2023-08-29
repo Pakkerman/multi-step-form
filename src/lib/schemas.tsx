@@ -49,7 +49,7 @@ export const StepOneSchema = z.object({
 })
 
 export const StepTwoSchema = z.object({
-  plan: z.string(),
+  plan: z.string().min(1),
 })
 export const StepThreeSchema = z.object({ addons: z.array(z.string()).min(1) })
 
