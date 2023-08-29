@@ -45,10 +45,9 @@ export const StepThree = () => {
         className="flex h-full flex-col md:justify-between"
       >
         <FormHeading />
-        <ul className=" flex h-full flex-col space-y-2 ">
+        <ul className=" flex h-full flex-col space-y-3">
           {StepThreeFieldData.map((item) => {
             const { label, info, monthlyPrice } = item
-
             const checked = watch("addons").includes(label)
 
             let price = monthlyPrice
@@ -58,7 +57,7 @@ export const StepThree = () => {
               <label
                 key={label}
                 htmlFor={label}
-                className={`flex cursor-pointer space-x-4 rounded-lg border-[1.5px]  px-4 py-3 transition-all
+                className={`flex h-24 cursor-pointer space-x-4 rounded-lg border-[1.5px]  px-4 py-3 transition-all
                       hover:border-primary-purplish-blue
                       ${
                         checked

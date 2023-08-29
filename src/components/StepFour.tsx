@@ -7,6 +7,7 @@ import {
 import { BackButton, FormHeading } from "./FormElements"
 import { useFormControlContext } from "~/contexts/FormControlContext"
 import { useUserInputContext } from "~/contexts/UserInputContext"
+import Link from "next/link"
 
 export const StepFour = () => {
   const { step, setStep } = useFormControlContext()
@@ -60,12 +61,14 @@ export const StepFour = () => {
         </div>
         <div className="hidden justify-between md:flex">
           <BackButton onClick={() => setStep(step - 1)} />
-          <button
-            className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-            type="submit"
-          >
-            Confirm
-          </button>
+          <Link href="/thankyou">
+            <button
+              className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+              type="submit"
+            >
+              Confirm
+            </button>
+          </Link>
         </div>
       </div>
     </>

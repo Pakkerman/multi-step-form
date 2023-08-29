@@ -4,7 +4,7 @@ export const MobileProgress = () => {
   const { step } = useFormControlContext()
 
   return (
-    <div className="flex justify-center space-x-4 md:hidden ">
+    <div className="flex justify-center space-x-6 md:hidden">
       {["1", "2", "3", "4"].map((item, idx) => (
         <button
           key={item}
@@ -27,7 +27,7 @@ export const DesktopProgress = () => {
   const { step } = useFormControlContext()
 
   return (
-    <ul className="mx-8 hidden h-[50%] flex-col justify-between  p-4 pt-[20%] md:flex ">
+    <ul className="mx-8 hidden h-[50%] flex-col justify-between  p-4 pt-[20%] md:flex">
       {["YOUR INFO", "SELECT PLAN", "ADD-ONS", "SUMMARY"].map((item, idx) => (
         <li key={item} className="flex items-center space-x-3 ">
           <button

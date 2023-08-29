@@ -1,13 +1,8 @@
-import { useState } from "react"
-import { MobileProgress, DesktopProgress } from "../components/Prograss"
-import { Form } from "~/components/Form"
-import { useFormControlContext } from "~/contexts/FormControlContext"
+import { Form } from "react-hook-form"
 import { BackButton } from "~/components/FormElements"
+import { MobileProgress, DesktopProgress } from "~/components/Prograss"
 
-export default function Home() {
-  const { step, setStep, controlButtonRef, formValid } = useFormControlContext()
-  const [submitting, setSubmitting] = useState<boolean>(false)
-
+export default function ThankPage() {
   return (
     <>
       <main className=" flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center justify-between transition-all md:justify-center">
@@ -23,12 +18,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="h-[525px] w-full md:h-full md:w-[60%]">
-            <Form />
-          </div>
+          <div className="h-[525px] w-full md:h-full md:w-[60%]">thank</div>
         </section>
         <section className="h-20 w-full bg-neutral-alabaster px-4 md:hidden">
-          <div className="flex h-20 flex-row-reverse items-center justify-between px-2">
+          {/* <div className="flex h-20 flex-row-reverse items-center justify-between px-2">
             {step < 3 ? (
               <button
                 type="submit"
@@ -47,7 +40,7 @@ export default function Home() {
               </button>
             )}
             {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}
-          </div>
+          </div> */}
         </section>
       </main>
     </>

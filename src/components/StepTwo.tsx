@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -9,6 +8,13 @@ import { useUserInputContext } from "~/contexts/UserInputContext"
 
 import { StepTwoFieldData } from "~/lib/data"
 import { type StepTwoFields, StepTwoSchema } from "~/lib/schemas"
+
+// for tailwind to parse classname
+const BGs = [
+  "bg-[url('/assets/images/icon-pro.svg')]",
+  "bg-[url('/assets/images/icon-arcade.svg')]",
+  "bg-[url('/assets/images/icon-advanced.svg')]",
+]
 
 export const StepTwo = () => {
   const { step, setStep, setFormValid } = useFormControlContext()
@@ -42,14 +48,11 @@ export const StepTwo = () => {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="flex h-full flex-col md:justify-between"
-      >
+      <form onSubmit={handleSubmit} className="flex h-full flex-col ">
         <FormHeading />
-        <div className="flex h-full flex-col ">
+        <div className="flex h-full flex-col">
           <ul className="space-y-2">
-            {StepTwoFieldData.map((item) => {
+            {StepTwoFieldData.map((item, idx) => {
               const { fieldName, label, monthlyPrice } = item
               const yearlyPrice = monthlyPrice * 10
               return (
@@ -65,13 +68,11 @@ export const StepTwo = () => {
                     setValue("plan", fieldName)
                   }}
                 >
-                  <Image
-                    src={`assets/images/icon-${fieldName}.svg`}
-                    width={40}
-                    height={40}
-                    alt={`${label} icon`}
+                  <div
+                    className={`h-[50px] w-[50px] bg-[url('/assets/images/icon-${fieldName}.svg')] bg-cover bg-no-repeat`}
                   />
-                  <div className="w-full">
+                  {/* {SVGs[idx]} */}
+                  <div className="flex-grow">
                     <label className="font-bold capitalize text-primary-marine-blue">
                       {label}
                     </label>
@@ -96,8 +97,8 @@ export const StepTwo = () => {
             })}
           </ul>
 
-          <div className="flex flex-grow flex-col justify-center">
-            <div className="flex justify-evenly rounded-lg bg-neutral-magnolia py-4">
+          <div className="flex flex-grow flex-col justify-end md:justify-center">
+            <div className="flex h-12 items-center justify-evenly rounded-lg bg-neutral-magnolia">
               <p
                 className={`w-20 text-center transition-all ${
                   billCycle === "monthly"
