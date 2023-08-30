@@ -5,65 +5,77 @@ This is a solution to the [Multi-step form](https://www.frontendmentor.io/challe
 
 
 ### Screenshots
-<div style="text-align: center;">
-    <div style="margin-bottom: 10px;">
-        <strong>Mobile Screenshot</strong>
-    </div>
-    <img src="./screenshots/screenshotMobile.jpg" alt="Mobile Screenshot" style="max-height: 300px;">
+  
+<div align='center'>
+    <h2>Mobile Screenshot</h2>
+    <img src="./public/screenshots/screenshotMobile.jpg" alt="Mobile Screenshot" Height='400'>
 </div>
 
-<div style="text-align: center;">
-    <div style="margin-bottom: 10px;">
-        <strong>Tablet Screenshot</strong>
-    </div>
-    <img src="./screenshots/screenshotTablet.jpg" alt="Tablet Screenshot" style="max-height: 400px;">
-</div>
 
-<div style="text-align: center;">
-    <div style="margin-bottom: 10px;">
-        <strong>Desktop Screenshot</strong>
-    </div>
-    <img src="./screenshots/screenshotDesktop.jpg" alt="Desktop Screenshot" style="max-height: 500px;">
+<div align='center'>
+    <h2>Desktop Screenshot</h2>
+    <img src="./public/screenshots/screenshotDesktop.jpg" alt="Desktop Screenshot" maxHeight='500'>
 </div>
 
 
 ### Solution Requirements
 
-- [ ] Complete each step of the sequence
-- [ ] Go back to a previous step to update their selections
-- [ ] See a summary of their selections on the final step and confirm their order
-- [ ] View the optimal layout for the interface depending on their device's screen size
-- [ ] See hover and focus states for all interactive elements on the page
-- [ ] Receive form validation messages if:
-  - [ ] A field has been missed
-  - [ ] The email address is not formatted correctly
-  - [ ] A step is submitted, but no selection has been made
+- [x] Complete each step of the sequence
+- [x] Go back to a previous step to update their selections
+- [x] See a summary of their selections on the final step and confirm their order
+- [x] View the optimal layout for the interface depending on their device's screen size
+- [x] See hover and focus states for all interactive elements on the page
+- [x] Receive form validation messages if:
+  - [x] A field has been missed
+  - [x] The email address is not formatted correctly
+  - [x] A step is submitted, but no selection has been made
 
 
 ### Modifications
-- [ ] Small Animations
-- [ ] Added link to next section in the selection section
+- [x] Small transistion animations
 
 ### Tasks
-- [ ] Navbar for all layout
-- [ ] Mobile menu 
+- [x] **Layouts and Styling**
+  - [x] Prograss bar for mobile and desktop
+  - [x] Form Layout for mobile and desktop
+  - [x] Bottom button section for mobile
 
-### Styling
-- [ ] Background on all layouts and all pages
-- [ ] Navbar on all layouts
+- [x] **Form**
+  - [x] Form and user input is kept in react context, prevent jumping steps
+  - [x] Data persists when user navigate back to already filled out step
+    - Step 1 Basic Info: 
+      - [x] Text input validation and error feedback
+    - Step 2 Plan Selection: 
+      - [x] Radio input behaivor
+      - [x] Chanege content upon switching billing cycle
+    - Step 3 Addons: 
+      - [x] Checkboxes input behavior
+      - [x] Chanege content upon switching billing cycle
+    - Step 4 Confirm order: 
+      - [x] List all user input
+      - [x] Calculate order total price based on user input and billing cycle
+    Form navigations:
+      - [x] next button available when the inputs are valid
+      - [x] back button
+
+- [x] **Routing** 
+  - [x] Direct to thankyou page after form submit
+  - [x] Redirect back to form if user on thank you page without input anything first
 
 ### Optimizations
+- [x] Font preloading
 
 
 ### Learned
-  - How to correctly layout mobile UI using min and max height, and dvh
-  - React Hook Form
-  - How to submit a form with button that is not a child in react 
+  - Layout mobile UI using min and max height, and dvh
+  - Preloading Local font with nextjs
+  - React Hook Form with Zod validation and infer types
+
 
 ### Links
 
-- [Github repo]()
-- [Deployed on Vercel]()
+- [Github repo](https://github.com/Pakkerman/multi-step-form)
+- [Deployed on Vercel](https://multi-step-form-chi-woad.vercel.app/)
 
 ### Built with
 
@@ -71,4 +83,6 @@ This is a solution to the [Multi-step form](https://www.frontendmentor.io/challe
   - [Nextjs](https://nextjs.org/)
   - [React](https://react.dev/)
   - [TailwindCSS](https://tailwindcss.com/)
+  - [react-hook-form](https://www.react-hook-form.com/)
+  - [Zod](https://zod.dev/)
 

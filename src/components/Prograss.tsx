@@ -8,7 +8,7 @@ export const MobileProgress = () => {
       {["1", "2", "3", "4"].map((item, idx) => (
         <button
           key={item}
-          className={`border-magnolia h-8 w-8 rounded-full border-[1px] font-bold
+          className={`border-magnolia h-8 w-8 rounded-full border-[1px] font-bold transition-all
           ${
             step === idx
               ? "text-magnolia border-primary-light-blue bg-primary-light-blue"
@@ -31,7 +31,7 @@ export const DesktopProgress = () => {
       {["YOUR INFO", "SELECT PLAN", "ADD-ONS", "SUMMARY"].map((item, idx) => (
         <li key={item} className="flex items-center space-x-3 ">
           <button
-            className={`border-magnolia h-8 w-8 rounded-full border-[1px] font-bold
+            className={`border-magnolia h-8 w-8 rounded-full border-[1px] font-bold transition-all
            ${
              step === idx
                ? "text-magnolia border-primary-light-blue bg-primary-light-blue"

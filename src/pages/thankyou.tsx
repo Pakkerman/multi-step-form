@@ -1,9 +1,19 @@
-import { Form } from "react-hook-form"
+import { useRouter } from "next/dist/client/router"
+import { useEffect } from "react"
 import { Footer } from "~/components/Footer"
-import { BackButton, FormHeading } from "~/components/FormElements"
 import { MobileProgress, DesktopProgress } from "~/components/Prograss"
+import { useFormControlContext } from "~/contexts/FormControlContext"
 
 export default function ThankPage() {
+  const router = useRouter()
+  const { formCompleted } = useFormControlContext()
+
+  useEffect(() => {
+    if (!formCompleted) {
+      void router.push("/")
+    }
+  }, [formCompleted])
+
   return (
     <>
       <main className="flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center  transition-all md:justify-center">
@@ -30,9 +40,9 @@ export default function ThankPage() {
             </p>
           </div>
         </section>
-        <section className="fixed bottom-0 w-full bg-neutral-alabaster px-4 shadow-2xl md:hidden">
+        <footer className="fixed bottom-0 w-full bg-neutral-alabaster px-4 shadow-2xl md:hidden">
           <Footer />
-        </section>
+        </footer>
       </main>
     </>
   )

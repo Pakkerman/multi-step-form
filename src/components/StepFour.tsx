@@ -10,7 +10,7 @@ import { useUserInputContext } from "~/contexts/UserInputContext"
 import Link from "next/link"
 
 export const StepFour = () => {
-  const { step, setStep } = useFormControlContext()
+  const { step, setStep, setFormCompleted } = useFormControlContext()
   const { userInput, billCycle } = useUserInputContext()
 
   return (
@@ -65,6 +65,7 @@ export const StepFour = () => {
             <button
               className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
               type="submit"
+              onClick={() => setFormCompleted(true)}
             >
               Confirm
             </button>

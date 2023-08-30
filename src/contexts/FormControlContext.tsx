@@ -9,6 +9,8 @@ type FormControlContext = {
   controlButtonRef: React.RefObject<HTMLButtonElement>
   formValid: boolean
   setFormValid: React.Dispatch<React.SetStateAction<boolean>>
+  formCompleted: boolean
+  setFormCompleted: React.Dispatch<React.SetStateAction<boolean>>
 }
 export const FormControlContext = createContext<null | FormControlContext>(null)
 
@@ -18,11 +20,20 @@ export function FormControlContextProvider(
   const { children } = props
   const [step, setStep] = useState(0)
   const [formValid, setFormValid] = useState<boolean>(false)
+  const [formCompleted, setFormCompleted] = useState<boolean>(false)
   const controlButtonRef = useRef<HTMLButtonElement>(null)
 
   return (
     <FormControlContext.Provider
-      value={{ step, setStep, controlButtonRef, formValid, setFormValid }}
+      value={{
+        step,
+        setStep,
+        controlButtonRef,
+        formValid,
+        setFormValid,
+        formCompleted,
+        setFormCompleted,
+      }}
     >
       {children}
     </FormControlContext.Provider>

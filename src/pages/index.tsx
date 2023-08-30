@@ -1,13 +1,13 @@
-import { useState } from "react"
 import { MobileProgress, DesktopProgress } from "../components/Prograss"
 import { Form } from "~/components/Form"
 import { useFormControlContext } from "~/contexts/FormControlContext"
 import { BackButton } from "~/components/FormElements"
 import Link from "next/link"
+import { Footer } from "~/components/Footer"
 
 export default function Home() {
-  const { step, setStep, controlButtonRef, formValid } = useFormControlContext()
-  // const [submitting, setSubmitting] = useState<boolean>(false)
+  const { step, setStep, controlButtonRef, formValid, setFormCompleted } =
+    useFormControlContext()
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="h-[525px] w-full md:h-full md:w-[60%]">
+          <div className="mx-auto h-[525px] w-full md:h-full md:w-[60%]">
             <Form />
           </div>
         </section>
@@ -44,6 +44,7 @@ export default function Home() {
                 <button
                   className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
                   type="submit"
+                  onClick={() => setFormCompleted(true)}
                 >
                   Confirm
                 </button>
@@ -52,6 +53,9 @@ export default function Home() {
             {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}
           </div>
         </section>
+        <footer className="fixed bottom-0 hidden md:block ">
+          <Footer />
+        </footer>
       </main>
     </>
   )
