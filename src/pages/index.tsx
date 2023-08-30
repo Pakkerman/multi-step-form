@@ -10,12 +10,12 @@ export default function Home() {
 
   return (
     <>
-      <main className=" flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center justify-between transition-all md:justify-center">
-        <section className="relative flex h-32 items-center justify-center md:hidden">
-          <div className="pre absolute top-0 z-[-100] h-[200px] w-[100vw] min-w-[390px] bg-[url('/assets/images/bg-sidebar-mobile.svg')] bg-cover bg-no-repeat" />
+      <main className="flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center  transition-all md:justify-center">
+        <section className="flex h-24 items-center justify-center md:hidden">
+          <div className="fixed top-0 z-[-1] h-[250px] w-[100vw] min-w-[390px] bg-[url('/assets/images/bg-sidebar-mobile.svg')] bg-cover bg-no-repeat" />
           <MobileProgress />
         </section>
-        <section className="w-[90%] max-w-[390px] translate-y-[-5%] rounded-xl bg-neutral-alabaster drop-shadow-md md:flex md:min-h-[650px] md:max-w-[800px] md:flex-row md:items-center">
+        <section className="w-[90%] max-w-[390px] rounded-xl bg-neutral-alabaster drop-shadow-md md:flex md:min-h-[650px] md:max-w-[800px] md:flex-row md:items-center">
           <div className="relative hidden h-[650px] w-[274px] md:block ">
             <DesktopProgress />
             <div className="absolute top-0 z-[-100] h-full w-full p-4">
@@ -27,7 +27,7 @@ export default function Home() {
             <Form />
           </div>
         </section>
-        <section className="h-20 w-full bg-neutral-alabaster px-4 md:hidden">
+        <section className="fixed bottom-0 h-20 w-full bg-neutral-alabaster px-4 shadow-2xl md:hidden">
           <div className="flex h-20 flex-row-reverse items-center justify-between px-2">
             {step < 3 ? (
               <button
