@@ -3,6 +3,7 @@ import { MobileProgress, DesktopProgress } from "../components/Prograss"
 import { Form } from "~/components/Form"
 import { useFormControlContext } from "~/contexts/FormControlContext"
 import { BackButton } from "~/components/FormElements"
+import Link from "next/link"
 
 export default function Home() {
   const { step, setStep, controlButtonRef, formValid } = useFormControlContext()
@@ -10,7 +11,7 @@ export default function Home() {
 
   return (
     <>
-      <main className=" flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center  transition-all md:justify-center">
+      <main className="flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center  transition-all md:justify-center">
         <section className="flex h-24 items-center justify-center md:hidden">
           <div className="fixed top-0 z-[-1] h-[250px] w-[100vw] min-w-[390px] bg-[url('/assets/images/bg-sidebar-mobile.svg')] bg-cover bg-no-repeat" />
           <MobileProgress />
@@ -39,12 +40,14 @@ export default function Home() {
                 Next
               </button>
             ) : (
-              <button
-                className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
-                type="submit"
-              >
-                Confirm
-              </button>
+              <Link href="/thankyou">
+                <button
+                  className="rounded-lg bg-primary-purplish-blue px-4 py-2 text-neutral-magnolia disabled:opacity-30"
+                  type="submit"
+                >
+                  Confirm
+                </button>
+              </Link>
             )}
             {step > 0 && <BackButton onClick={() => setStep(step - 1)} />}
           </div>

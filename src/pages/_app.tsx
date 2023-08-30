@@ -16,11 +16,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <title>Multi Step Form</title>
         <meta name="description" content="Multi Step Form with Create T3 App" />
         <link rel="icon" href="/favicon.png" />
+        <link rel="preload" href="/assets/images/icon-thank-you.svg" />
+        <link rel="preload" href="/assets/images/bg-sidebar-mobile.svg" />
+        <link rel="preload" href="/assets/images/bg-sidebar-desktop.svg" />
       </Head>
       <FormControlContextProvider>
         <UserInputContextProvider>
-          <WindowObserver />
-          <ColorPalette />
+          {/* <WindowObserver /> */}
+          {/* <ColorPalette /> */}
           <FontWrapper>
             <Component {...pageProps} />
           </FontWrapper>
