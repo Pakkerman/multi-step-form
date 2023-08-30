@@ -7,6 +7,7 @@ import { WindowObserver } from "~/helpers/WindowObserver"
 import { ColorPalette } from "~/helpers/ColorPalette"
 import { FormControlContextProvider } from "~/contexts/FormControlContext"
 import { UserInputContextProvider } from "~/contexts/UserInputContext"
+import { FontWrapper } from "~/components/FontWrapper"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -14,14 +15,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <Head>
         <title>Multi Step Form</title>
         <meta name="description" content="Multi Step Form with Create T3 App" />
-        <link href="favicon.png" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
-
       <FormControlContextProvider>
         <UserInputContextProvider>
           <WindowObserver />
           <ColorPalette />
-          <Component {...pageProps} />
+          <FontWrapper>
+            <Component {...pageProps} />
+          </FontWrapper>
         </UserInputContextProvider>
       </FormControlContextProvider>
     </>

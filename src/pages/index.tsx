@@ -6,11 +6,11 @@ import { BackButton } from "~/components/FormElements"
 
 export default function Home() {
   const { step, setStep, controlButtonRef, formValid } = useFormControlContext()
-  const [submitting, setSubmitting] = useState<boolean>(false)
+  // const [submitting, setSubmitting] = useState<boolean>(false)
 
   return (
     <>
-      <main className="flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center  transition-all md:justify-center">
+      <main className=" flex h-[100dvh] min-h-[700px] min-w-[390px] flex-col items-center  transition-all md:justify-center">
         <section className="flex h-24 items-center justify-center md:hidden">
           <div className="fixed top-0 z-[-1] h-[250px] w-[100vw] min-w-[390px] bg-[url('/assets/images/bg-sidebar-mobile.svg')] bg-cover bg-no-repeat" />
           <MobileProgress />

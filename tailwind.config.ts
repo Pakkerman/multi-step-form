@@ -4,10 +4,6 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      // fontFamily: { ubuntu: ["var(--font-ubuntu"] },
-      fontFamily: {
-        ubuntu: ["Ubuntu"],
-      },
       colors: {
         "primary-marine-blue": "hsl(213, 96%, 18%)",
         "primary-purplish-blue": "hsl(243, 100%, 62%)",

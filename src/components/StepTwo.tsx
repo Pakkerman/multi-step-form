@@ -52,7 +52,7 @@ export const StepTwo = () => {
         <FormHeading />
         <div className="flex h-full flex-col">
           <ul className="space-y-2">
-            {StepTwoFieldData.map((item, idx) => {
+            {StepTwoFieldData.map((item) => {
               const { fieldName, label, monthlyPrice } = item
               const yearlyPrice = monthlyPrice * 10
               return (
@@ -71,7 +71,6 @@ export const StepTwo = () => {
                   <div
                     className={`h-[50px] w-[50px] bg-[url('/assets/images/icon-${fieldName}.svg')] bg-cover bg-no-repeat`}
                   />
-                  {/* {SVGs[idx]} */}
                   <div className="flex-grow">
                     <label className="font-bold capitalize text-primary-marine-blue">
                       {label}
