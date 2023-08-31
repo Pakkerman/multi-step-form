@@ -51,14 +51,14 @@ export const StepTwo = () => {
       <form onSubmit={handleSubmit} className="flex h-full flex-col ">
         <FormHeading />
         <div className="flex h-full flex-col">
-          <ul className="space-y-2">
+          <ul className="h-48 space-y-2 md:flex md:justify-evenly md:space-x-2 md:space-y-0">
             {StepTwoFieldData.map((item) => {
               const { fieldName, label, monthlyPrice } = item
               const yearlyPrice = monthlyPrice * 10
               return (
                 <li
                   key={label}
-                  className={`flex cursor-pointer space-x-3 overflow-hidden rounded-lg border-[1.5px]  p-4 transition-colors hover:border-primary-purplish-blue ${
+                  className={`flex cursor-pointer space-x-3 overflow-hidden rounded-lg border-[1.5px] p-4 transition-colors hover:border-primary-purplish-blue md:flex-col md:justify-between md:space-x-0 ${
                     watch("plan") === fieldName
                       ? " border-primary-purplish-blue bg-neutral-light-gray/40"
                       : "border-neutral-light-gray"
@@ -71,11 +71,11 @@ export const StepTwo = () => {
                   <div
                     className={`h-[50px] w-[50px] bg-[url('/assets/images/icon-${fieldName}.svg')] bg-cover bg-no-repeat`}
                   />
-                  <div className="flex-grow">
+                  <div className="flex-grow md:flex-grow-0">
                     <label className="font-bold capitalize text-primary-marine-blue">
                       {label}
                     </label>
-                    <div className="flex items-center justify-between text-neutral-cool-gray">
+                    <div className="flex items-center justify-between text-neutral-cool-gray  md:flex-col md:items-start">
                       <p>
                         ${billCycle === "monthly" ? monthlyPrice : yearlyPrice}
                         /mo
