@@ -75,7 +75,7 @@ This is a solution to the [Multi-step form](https://www.frontendmentor.io/challe
 ### Links
 
 - [Github repo](https://github.com/Pakkerman/multi-step-form)
-- [Deployed on Vercel](https://multi-step-form-chi-woad.vercel.app/)
+- [Deployed on Vercel](https://pakkerman-multi-step-form-challenge.vercel.app/)
 
 ### Built with
 
